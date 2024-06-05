@@ -1,0 +1,105 @@
+---
+title: "Aula 1"
+author: "Carlos"
+format: html
+warning: false
+message: false
+---
+
+# Aprendendo a utilizar o R Quarto Markdown
+
+Nessa primeira aula aprendemos a criar e utilizar o R Quarto Markdown e vimos algumas funções básicas do R.
+
+## R Quarto Markdown
+
+O **Quarto** é uma versão mais avançada e atualizada do R Markdown, incluindo dezenas de novos recursos e sendo capaz de renderizar a maioria dos arquivos `.Rmd` existentes sem modificação, possibilitando a criação de relatórios ou textos em diferentes formatos (HTML, PDF, Word e outros).
+
+Para a criação de um documento R Quarto Markdown, deve-se clicar em *New File* e posteriormente em *Quarto Document*. Após nomear o arquivo e escolher o formato em que ele será renderizado, ele estará pronto para ser usado
+
+## RStudio Project
+
+Uma forma de manter o trabalho organizado é usando o **RStudio Projects**. Ele mantém todos os scripts, documentos e dados em um único lugar, deixando-os separados de outros arquivos e projetos. Isso permite trabalhar com diferentes projetos ao mesmo tempo sem um interferir no outro.
+
+Para criar um novo projeto, é necessário clicar em *File*, depois *New Project*, escolher um *directory* existente ou criar um novo e nomear o projeto.
+
+## Chunk
+
+Antes de tudo, para que possamos utilizar o R Quarto Markdown e executar pedaços de códigos que serão integrados ao documento, devemos criar um **chunk**. O **chunk** permite que as funções e demais códigos sejam executadas e rodadas no documento. Um atalho que pode ser usado para sua criação é o Ctrl + Alt + I.
+
+## Texto
+
+Durante a escrita, podemos colocar palavras em *itálico* usando 1 asterisco, do mesmo modo podemos colocar palavras em **negrito** usando 2 asteriscos.
+
+Dentro de um chunk, podemos colocar palavras e/ou frases entre aspas ou com um `#` na frente para que ele seja rodado como um texto, e não como dado.
+
+## Atribuição de Valores
+
+Quando queremos atribuir um valor para algum nome, podemos utilizar `<-`. Desse modo, se quisermos trabalhar com esses valores ou conjunto de valores atribuídos a um nome, podemos utilizar diretamente o nome, sem precisar repetir o valor.
+
+```{r}
+x <- 10
+x
+
+y <- x*10
+y
+
+z <- x*y
+z
+```
+
+## Conjunto de valores e data frame
+
+Para criar um conjunto de valores, pode-se utilizar `c()`e colocar os valores desejados. Caso os valores sejam contínuos, pode-se agrupá-los usando `:`, desse modo o conjunto será formado por todos os valores que estão entre os dois números colocados.
+
+```{r}
+A <- c(1:10)
+A
+B <- c(11:20)
+B
+```
+
+O *data frame* é uma estrutura em que os dados podem ser organizados em formato de tabela. Ele pode ser criado por meio da junção de dois ou mais conjunto de dados, usando a função `data.frame()`, mas, para isso, o número de valores presentes nos conjuntos deve ser o mesmo.
+
+```{r}
+df <- data.frame(A,B)
+df
+```
+
+## Package, library e help
+
+Os *packages* ou pacotes são conjunto de funções, dados e documentações que podem ser instalados a fim de estender a funcionalidade do R. Para instalar novos pacotes, usamos a função `install.packages()`e chamamos o nome do pacote desejado.
+
+Para que o pacote instalado seja ativado e possa ser utilizado no nosso documento, é necessário chamá-lo pela função `library()`.
+
+Para tirar dúvida de como um pacote funciona e quais são as funções e dados presentes dentro dele, pode-se utilizar `?` com o nome do pacote para aparecer todas as informações pertinentes sobre ele. Para aprender sobre uma determinada função, pode-se utilizar também `??`.
+
+```{r}
+library(agricolae)
+??audpc
+dates<-c(14,21,28) # days
+# example 1: evaluation - vector
+evaluation<-c(40,80,90)
+audpc(evaluation,dates)
+
+```
+
+## Pipe
+
+Quando quisermos que todas as funções executadas estejam se referindo a um determinado *data frame* sem precisar chamá-lo repetidamente, podemos usar um **pipe**. O pipe, executado por `|>`ou `%>%`, indica que todas as funções abaixo dele estão se referindo ao *data frame* especificado. Um atalho para a criação do pipe é Ctrl + Shift + M.
+
+```{r}
+df2 <- cars
+cars
+df2$dist2 <- c(1:50) # O $ é usado para criar uma nova coluna dentro do df2
+df2
+
+library(tidyverse)
+
+df2 |>
+  mutate(dist3 = dist2+1) |> 
+  select(1)
+```
+
+# Renderização
+
+Para transformar esse documento `.qmd` em HTML ou em outros formatos, é necessário renderizar o documento. Para isso basta clicar no **Render** para que o documento ou site seja criado.

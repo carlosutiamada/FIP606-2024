@@ -9,6 +9,8 @@ website:
       - href: index.qmd
         text: Home
       - about.qmd
+      - href: Aula1_quarto.qmd
+        text: Aula 1
 
 format:
   html:
