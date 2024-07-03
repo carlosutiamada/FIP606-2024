@@ -1,0 +1,6 @@
+"0","campo2 <- campo |> 
+  select(DFC, FER, PROD)
+"
+"2","Error in select(campo, DFC, FER, PROD) : 
+  unused arguments (DFC, FER, PROD)
+"

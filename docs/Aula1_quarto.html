@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Carlos">
 
-<title>FIP606-24 - Aula 1</title>
+<title>FIP606-24 - Introdução ao R</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -59,21 +58,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./favicon.jpg" rel="icon" type="image/jpeg">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -105,6 +106,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <img src="./logo.png" alt="" class="navbar-logo">
+    </a>
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">FIP606-24</span>
     </a>
@@ -116,19 +120,102 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html" rel="" target="">
+    <a class="nav-link" href="./index.html" rel="" target=""><i class="bi bi-house" role="img">
+</i> 
  <span class="menu-text">Home</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./about.html" rel="" target="">
- <span class="menu-text">About</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-sobre-o-r" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+      <i class="bi bi-r-circle-fill" role="img">
+</i> 
+ <span class="menu-text">Sobre o R</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-sobre-o-r">    
+        <li>
+    <a class="dropdown-item" href="./Aula1_quarto.html" rel="" target="">
+ <span class="dropdown-text">Introdução ao R</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./Aula2_quarto.html" rel="" target="">
+ <span class="dropdown-text">Pacotes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Aula3_quarto.html" rel="" target="">
+ <span class="dropdown-text">Importação de dados</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-análise-exploratória" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+      <i class="bi bi-bar-chart" role="img">
+</i> 
+ <span class="menu-text">Análise exploratória</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-análise-exploratória">    
+        <li>
+    <a class="dropdown-item" href="./Aula4_quarto.html" rel="" target="">
+ <span class="dropdown-text">Análise exploratória 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Aula5_quarto.html" rel="" target="">
+ <span class="dropdown-text">Análise exploratória 2</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-análise-estatística" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+      <i class="bi bi-clipboard-data" role="img">
+</i> 
+ <span class="menu-text">Análise estatística</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-análise-estatística">    
+        <li>
+    <a class="dropdown-item" href="./Aula6_quarto.html" rel="" target="">
+ <span class="dropdown-text">Teste-t</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Aula7_quarto.html" rel="" target="">
+ <span class="dropdown-text">ANOVA</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Aula8_quarto.html" rel="" target="">
+ <span class="dropdown-text">ANOVA em blocos casualizados</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Aula9_quarto.html" rel="" target="">
+ <span class="dropdown-text">Regressão</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Aula10_quarto.html" rel="" target="">
+ <span class="dropdown-text">Correlação</span></a>
+  </li>  
+    </ul>
+  </li>
   <li class="nav-item">
-    <a class="nav-link active" href="./Aula1_quarto.html" rel="" target="" aria-current="page">
- <span class="menu-text">Aula 1</span></a>
+    <a class="nav-link" href="./Aula11_quarto.html" rel="" target=""><i class="bi bi-map" role="img">
+</i> 
+ <span class="menu-text">Mapas</span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools ms-auto">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/carlosutiamada" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/carlosakirautiamada/" rel="" target=""><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.instagram.com/carlos.akira.utiamada/" rel="" target=""><i class="bi bi-instagram" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
@@ -143,18 +230,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#aprendendo-a-utilizar-o-r-quarto-markdown" id="toc-aprendendo-a-utilizar-o-r-quarto-markdown" class="nav-link active" data-scroll-target="#aprendendo-a-utilizar-o-r-quarto-markdown">Aprendendo a utilizar o R Quarto Markdown</a>
+  <li><a href="#o-que-é-o-r" id="toc-o-que-é-o-r" class="nav-link active" data-scroll-target="#o-que-é-o-r">O que é o R?</a>
   <ul class="collapse">
-  <li><a href="#r-quarto-markdown" id="toc-r-quarto-markdown" class="nav-link" data-scroll-target="#r-quarto-markdown">R Quarto Markdown</a></li>
+  <li><a href="#instalação-do-r-e-rstudio" id="toc-instalação-do-r-e-rstudio" class="nav-link" data-scroll-target="#instalação-do-r-e-rstudio">Instalação do R e RStudio</a></li>
+  </ul></li>
+  <li><a href="#aprendendo-a-utilizar-o-rstudio" id="toc-aprendendo-a-utilizar-o-rstudio" class="nav-link" data-scroll-target="#aprendendo-a-utilizar-o-rstudio">Aprendendo a utilizar o RStudio</a>
+  <ul class="collapse">
   <li><a href="#rstudio-project" id="toc-rstudio-project" class="nav-link" data-scroll-target="#rstudio-project">RStudio Project</a></li>
+  </ul></li>
+  <li><a href="#r-script-r-markdown-e-quarto" id="toc-r-script-r-markdown-e-quarto" class="nav-link" data-scroll-target="#r-script-r-markdown-e-quarto">R Script, R Markdown e Quarto</a></li>
+  <li><a href="#aprendendo-a-utilizar-o-quarto" id="toc-aprendendo-a-utilizar-o-quarto" class="nav-link" data-scroll-target="#aprendendo-a-utilizar-o-quarto">Aprendendo a utilizar o Quarto</a>
+  <ul class="collapse">
   <li><a href="#chunk" id="toc-chunk" class="nav-link" data-scroll-target="#chunk">Chunk</a></li>
   <li><a href="#texto" id="toc-texto" class="nav-link" data-scroll-target="#texto">Texto</a></li>
+  <li><a href="#estruturas-da-linguagem-r" id="toc-estruturas-da-linguagem-r" class="nav-link" data-scroll-target="#estruturas-da-linguagem-r">Estruturas da linguagem R</a></li>
   <li><a href="#atribuição-de-valores" id="toc-atribuição-de-valores" class="nav-link" data-scroll-target="#atribuição-de-valores">Atribuição de Valores</a></li>
   <li><a href="#conjunto-de-valores-e-data-frame" id="toc-conjunto-de-valores-e-data-frame" class="nav-link" data-scroll-target="#conjunto-de-valores-e-data-frame">Conjunto de valores e data frame</a></li>
-  <li><a href="#package-library-e-help" id="toc-package-library-e-help" class="nav-link" data-scroll-target="#package-library-e-help">Package, library e help</a></li>
   <li><a href="#pipe" id="toc-pipe" class="nav-link" data-scroll-target="#pipe">Pipe</a></li>
-  </ul></li>
   <li><a href="#renderização" id="toc-renderização" class="nav-link" data-scroll-target="#renderização">Renderização</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -163,19 +257,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Aula 1</h1>
+<h1 class="title">Introdução ao R</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Carlos </p>
-          </div>
-  </div>
     
   
     
@@ -184,27 +272,96 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="aprendendo-a-utilizar-o-r-quarto-markdown" class="level1">
-<h1>Aprendendo a utilizar o R Quarto Markdown</h1>
-<p>Nessa primeira aula aprendemos a criar e utilizar o R Quarto Markdown e vimos algumas funções básicas do R.</p>
-<section id="r-quarto-markdown" class="level2">
-<h2 class="anchored" data-anchor-id="r-quarto-markdown">R Quarto Markdown</h2>
-<p>O <strong>Quarto</strong> é uma versão mais avançada e atualizada do R Markdown, incluindo dezenas de novos recursos e sendo capaz de renderizar a maioria dos arquivos <code>.Rmd</code> existentes sem modificação, possibilitando a criação de relatórios ou textos em diferentes formatos (HTML, PDF, Word e outros).</p>
-<p>Para a criação de um documento R Quarto Markdown, deve-se clicar em <em>New File</em> e posteriormente em <em>Quarto Document</em>. Após nomear o arquivo e escolher o formato em que ele será renderizado, ele estará pronto para ser usado</p>
+<section id="o-que-é-o-r" class="level1">
+<h1>O que é o R?</h1>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Foto1.jpg" class="img-fluid" width="1280"></p>
+</div>
+</div>
+<p>R é uma linguagem de programação que vem se especializando na manipulação, análise e visualização de dados. Foi criado originalmente por Ross Ihaka e por Robert Gentleman no departamento de Estatística da Universidade de Auckland, Nova Zelândia.</p>
+<p>Dentre as suas vantagens, pode-se destacar a sua adaptação aos sistemas operacionais Linux, Mac OS e Windows, sendo um programa de código livre e desenvolvido por seus próprios usuários, que criam documentos facilmente reprodutíveis e modificáveis. Além disso, possui uma comunidade extensa e ativa de usuários ao redor do mundo que todos os dias desenvolvem novas funcionalidades e pacotes para o programa e oferecem soluções para os problemas que possam surgir.</p>
+<p>O uso do software R é facilitado quando utilizamos o software <strong>RStudio</strong>, um ambiente de desenvolvimento integrado ao R, que apresenta uma interface gráfica mais amigável para o R, com muitos recursos úteis que facilitam a visualização do código R, a importação de conjunto de dados, a visualização de figuras, etc.</p>
+<section id="instalação-do-r-e-rstudio" class="level2">
+<h2 class="anchored" data-anchor-id="instalação-do-r-e-rstudio">Instalação do R e RStudio</h2>
+<p>Como o RStudio é uma interface para uso do R, ele deve ser instalado após a instalação do R.</p>
+<p>O R é instalado a partir da página do R na internet, que pode ser acessada clicando <a href="https://cran.r-project.org/">aqui</a>.</p>
+<p>O RStudio é instalado em uma página separada, que pode ser acessada clicando <a href="https://www.rstudio.com/">aqui</a>.</p>
 </section>
+</section>
+<section id="aprendendo-a-utilizar-o-rstudio" class="level1">
+<h1>Aprendendo a utilizar o RStudio</h1>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Foto2.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<p>Ao abrir o RStudio, aparece uma tela com 4 painéis assim como apresentado na imagem acima. Entender a função de cada painel é essencial para o uso do RStudio.</p>
+<p><strong>Painel 1</strong>: Neste painel é onde será escrito e criado o arquivo com o código R a ser executado e também onde é visualizado e editado um arquivo já criado. É possível trabalhar simultaneamente com 2 ou mais arquivos com códigos R. Para executar uma linha basta pressionar <em>Ctrl + enter</em>, ou selecionar as linhas que se quer executar e clicar sobre o botão <em>Run</em>.</p>
+<p><strong>Painel 2</strong>: Este painel possui várias abas. Na aba <strong>Environment</strong>, são indicados os objetos e variáveis criados no R, que podem ser matrizes, listas e planilhas de dados. Na aba <strong>History</strong> é mostrado todo o histórico de comandos executados.</p>
+<p><strong>Painel 3</strong>: Na aba <strong>Files</strong> é possível visualizar todos os arquivos que estão dentro da pasta de trabalho do R. Na aba <strong>Plots</strong> é onde é visualizado todos os gráficos produzidos com o R, e de onde é possível salvar individualmente cada figura clicando em <em>Export</em>. A aba <strong>Packages</strong> mostra a lista de todos os pacotes atualmente instalados no R. Na aba <strong>Help</strong> é possível obter ajuda sobre funções, pacotes e sobre conjuntos de dados específicos.</p>
+<p><strong>Painel 4</strong>: Na aba <strong>Console</strong> é onde aparecem os códigos compilados no R e os resultados obtidos com sua execução. Ao invés de executar o código R a partir do painel 1, o código R pode ser digitado diretamente na linha de comandos. Não é possível apagar os comandos que foram compilados no R nem os seus resultados, mas é possível limpar a janela clicando <em>Ctrl+l</em>.</p>
 <section id="rstudio-project" class="level2">
 <h2 class="anchored" data-anchor-id="rstudio-project">RStudio Project</h2>
-<p>Uma forma de manter o trabalho organizado é usando o <strong>RStudio Projects</strong>. Ele mantém todos os scripts, documentos e dados em um único lugar, deixando-os separados de outros arquivos e projetos. Isso permite trabalhar com diferentes projetos ao mesmo tempo sem um interferir no outro.</p>
-<p>Para criar um novo projeto, é necessário clicar em <em>File</em>, depois <em>New Project</em>, escolher um <em>directory</em> existente ou criar um novo e nomear o projeto.</p>
+<p>Antes de começar a executar comandos no R, a criação de um <strong>RStudio Projects</strong> é uma ótima forma de manter o seu trabalho organizado. Ele mantém todos os scripts, documentos e dados em um único lugar, deixando-os separados de outros arquivos e projetos. Isso permite trabalhar com diferentes projetos ao mesmo tempo sem um interferir no outro.</p>
+<p>Para criar um novo projeto, é necessário clicar em <em>File</em>, depois <em>New Project</em>, escolher um <em>Directory</em> (pasta do arquivo) existente ou criar um novo e nomear o projeto.</p>
 </section>
+</section>
+<section id="r-script-r-markdown-e-quarto" class="level1">
+<h1>R Script, R Markdown e Quarto</h1>
+<p>Agora que você aprendeu como o RStudio funciona, o próximo passo é começar a montar os seus scripts. O <strong>script</strong> é o documento onde são escritos todos os comandos que serão executados pelo programa R. Para criar um novo script, basta clicar em <em>New File</em> e selecionar <em>R Script</em>. Também é possível criar um novo script pelo atalho <em>Ctrl + Shift + N</em>.</p>
+<p>Além do <strong>R Script</strong>, 2 outros tipos de arquivo podem ser criados através do <em>New File</em>: o <strong>R Markdown</strong> e o <strong>Quarto Document</strong>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Qual arquivo usar?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Entre esses 3 arquivos, recomenda-se o uso do <strong>Quarto Document</strong> por ser uma versão mais atualizada e conter muito mais funções do que os demais arquivos. Além dele ser capaz de ser renderizado em formatos como HTML, Word e outros.</p>
+</div>
+</div>
+</section>
+<section id="aprendendo-a-utilizar-o-quarto" class="level1">
+<h1>Aprendendo a utilizar o Quarto</h1>
+<p>O <strong>Quarto</strong> é uma versão mais avançada e atualizada do R Markdown, incluindo dezenas de novos recursos e sendo capaz de renderizar a maioria dos arquivos <code>.Rmd</code> existentes sem modificação, possibilitando a criação de relatórios ou textos em diferentes formatos (HTML, PDF, Word e outros).</p>
+<p>Para a criação de um documento R Quarto Markdown, deve-se clicar em <em>New File</em> e posteriormente em <em>Quarto Document</em>. Após nomear o arquivo e escolher o formato em que ele será renderizado (HTML, PDF ou Word), ele estará pronto para ser usado.</p>
 <section id="chunk" class="level2">
 <h2 class="anchored" data-anchor-id="chunk">Chunk</h2>
-<p>Antes de tudo, para que possamos utilizar o R Quarto Markdown e executar pedaços de códigos que serão integrados ao documento, devemos criar um <strong>chunk</strong>. O <strong>chunk</strong> permite que as funções e demais códigos sejam executadas e rodadas no documento. Um atalho que pode ser usado para sua criação é o Ctrl + Alt + I.</p>
+<p>O principal mecanismo para executar qualquer código no R envolve primeiro a criação de um <strong>chunk</strong>. O <strong>chunk</strong> permite que as funções e demais códigos sejam executadas e rodadas no documento. Um atalho que pode ser usado para sua criação é o <em>Ctrl + Alt + I</em>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Qualquer código que tenha como função a importação, manipulação, análise e visualização de dados precisa ser realizado dentro de um <strong>chunk</strong> para que ele possa ser lido e executado pelo R!</p>
+</div>
+</div>
 </section>
 <section id="texto" class="level2">
 <h2 class="anchored" data-anchor-id="texto">Texto</h2>
-<p>Durante a escrita, podemos colocar palavras em <em>itálico</em> usando 1 asterisco, do mesmo modo podemos colocar palavras em <strong>negrito</strong> usando 2 asteriscos.</p>
+<p>Durante a escrita, podemos colocar palavras em <em>itálico</em> usando 1 asterisco no início e no final da palavra, do mesmo modo podemos colocar palavras em <strong>negrito</strong> usando 2 asteriscos.</p>
+<p>Para criar títulos e subtítulos, podemos colocar “#” no início da frase. Um “#” representa o título, enquanto “##” e “###” representam subtítulos.</p>
 <p>Dentro de um chunk, podemos colocar palavras e/ou frases entre aspas ou com um <code>#</code> na frente para que ele seja rodado como um texto, e não como dado.</p>
+</section>
+<section id="estruturas-da-linguagem-r" class="level2">
+<h2 class="anchored" data-anchor-id="estruturas-da-linguagem-r">Estruturas da linguagem R</h2>
+<ul>
+<li><p><strong>Valores ou values</strong>: são criadas pelo programador com a finalidade de salvar informações. As informações inseridas em um valor ficarão disponíveis para utilização enquanto o valor existir.</p></li>
+<li><p><strong>Funções</strong>: são um conjunto de instruções pré-definidas que executam uma ou mais tarefas. Existem muitas funções já prontas para sua utilização, salvas em pacotes desenvolvidos para facilitar a criação de scripts. Quanto mais funções o programador conhecer, mais fácil será escrever seus scripts.</p></li>
+<li><p><strong>Operadores</strong>: com os operadores fazemos operações matemáticas, como soma, divisão, multiplicação, etc.</p></li>
+<li><p><strong>Tipos de dados</strong>: <em>numeric</em> (números), <em>characters</em> (operações com letras, palavras, frases, etc.), <em>factors</em> (categorias) e <em>logicals</em> (verdadeiro ou falso). Esses são os tipos de dados básicos existentes na linguagem R.</p></li>
+<li><p><strong>Estrutura de dados</strong>: <em>vectors</em>, que são uma sequência de dados do mesmo tipo. <em>Lists</em>, que são vetores com tipos de dados diferentes. <em>Matrix</em>, que possuem duas dimensões e um tipo de dado. <em>Data frames</em>, que são estruturas mais complexas, similares as planilhas do Excel e com tipos de dados diferentes.</p></li>
+<li><p><strong>Condicional</strong>: No condicional <em>If</em>, dizemos que se algo é verdadeiro, uma ação deve ser realizada, se não é, outra será (ou nenhuma).</p></li>
+</ul>
 </section>
 <section id="atribuição-de-valores" class="level2">
 <h2 class="anchored" data-anchor-id="atribuição-de-valores">Atribuição de Valores</h2>
@@ -261,30 +418,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="package-library-e-help" class="level2">
-<h2 class="anchored" data-anchor-id="package-library-e-help">Package, library e help</h2>
-<p>Os <em>packages</em> ou pacotes são conjunto de funções, dados e documentações que podem ser instalados a fim de estender a funcionalidade do R. Para instalar novos pacotes, usamos a função <code>install.packages()</code>e chamamos o nome do pacote desejado.</p>
-<p>Para que o pacote instalado seja ativado e possa ser utilizado no nosso documento, é necessário chamá-lo pela função <code>library()</code>.</p>
-<p>Para tirar dúvida de como um pacote funciona e quais são as funções e dados presentes dentro dele, pode-se utilizar <code>?</code> com o nome do pacote para aparecer todas as informações pertinentes sobre ele. Para aprender sobre uma determinada função, pode-se utilizar também <code>??</code>.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(agricolae)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>??audpc</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>dates<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="dv">14</span>,<span class="dv">21</span>,<span class="dv">28</span>) <span class="co"># days</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># example 1: evaluation - vector</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>evaluation<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="dv">40</span>,<span class="dv">80</span>,<span class="dv">90</span>)</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">audpc</span>(evaluation,dates)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>evaluation 
-      1015 </code></pre>
-</div>
-</div>
-</section>
 <section id="pipe" class="level2">
 <h2 class="anchored" data-anchor-id="pipe">Pipe</h2>
-<p>Quando quisermos que todas as funções executadas estejam se referindo a um determinado <em>data frame</em> sem precisar chamá-lo repetidamente, podemos usar um <strong>pipe</strong>. O pipe, executado por <code>|&gt;</code>ou <code>%&gt;%</code>, indica que todas as funções abaixo dele estão se referindo ao <em>data frame</em> especificado. Um atalho para a criação do pipe é Ctrl + Shift + M.</p>
+<p>Quando quisermos que todas as funções executadas estejam se referindo a um determinado <em>data frame</em> sem precisar chamá-lo repetidamente, podemos usar um <strong>pipe</strong>. O pipe, executado por <code>|&gt;</code>ou <code>%&gt;%</code>, indica que todas as funções abaixo dele estão se referindo ao <em>data frame</em> especificado. Um atalho para a criação do pipe é <em>Ctrl + Shift + M</em>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> cars</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>cars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> cars</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>cars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   speed dist
 1      4    2
@@ -338,8 +477,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 49    24  120
 50    25   85</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>df2<span class="sc">$</span>dist2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>) <span class="co"># O $ é usado para criar uma nova coluna dentro do df2</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>df2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>df2<span class="sc">$</span>dist2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>) <span class="co"># O $ é usado para criar uma nova coluna dentro do df2</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>df2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   speed dist dist2
 1      4    2     1
@@ -393,11 +532,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 49    24  120    49
 50    25   85    50</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>df2 <span class="sc">|&gt;</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dist3 =</span> dist2<span class="sc">+</span><span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>df2 <span class="sc">|&gt;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dist3 =</span> dist2<span class="sc">+</span><span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   speed
 1      4
@@ -453,15 +592,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-</section>
-<section id="renderização" class="level1">
-<h1>Renderização</h1>
+<section id="renderização" class="level2">
+<h2 class="anchored" data-anchor-id="renderização">Renderização</h2>
 <p>Para transformar esse documento <code>.qmd</code> em HTML ou em outros formatos, é necessário renderizar o documento. Para isso basta clicar no <strong>Render</strong> para que o documento ou site seja criado.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Quer saber mais sobre o R?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Acesse esses livros e sites para mais informações sobre o R: - <a href="https://r4ds.had.co.nz/">R for Data Science</a> - <a href="https://bookdown.org/rdpeng/artofdatascience/">The Art of Data Science</a> - <a href="https://intro2r.com/">An Introduction to R</a></p>
+</div>
+</div>
 
 
 </section>
+</section>
 
-</main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -482,6 +634,121 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {

@@ -1,0 +1,11 @@
+"0","g2 + theme_classic()+
+  labs(x = ""Tratamento"",
+       y = ""Comprimento (mm)"",
+       title = ""Meu primeiro ggplot"",
+       caption = ""Fonte: Dados diversos"")+
+  ylim(0,20) +
+  scale_y_continuous(limits = c(0,20),
+                     n.breaks = 10)
+"
+"2","[38;5;232mScale for [32my[38;5;232m is already present.
+Adding another scale for [32my[38;5;232m, which will replace the existing scale.[39m"

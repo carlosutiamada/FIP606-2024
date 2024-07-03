@@ -1,0 +1,243 @@
+---
+title: "Elaboração de Mapas"
+format: html
+warning: false
+message: false
+---
+
+Quando estamos trabalhando com algum dado, muitas vezes é necessário mostrar o local onde foi realizado o experimento. Através do Software R, é possível elaborar mapas que realizem essa função. Nesta página você irá aprender como criar mapas tradicionais, mapas indicando pontos de coordenadas e mapas interativos.
+
+# Pacotes utilizados
+
+Primeiramente, deve-se instalar e carregar todos os pacotes que serão utilizados aqui.
+
+-   **tidyverse:** usado para manipulação, exploração e visualização de dados (essencial para a função `ggplot()`)
+-   **gsheet:** usado para importar dados do Google Sheets
+-   **rnaturalearth e rnaturalearthhires:** necessário para criação de mapas tradicionais. Para instalar o pacote `rnaturalearthhires` é preciso usar o comando `remotes::install_github("ropensci/rnaturalearthhires")`
+-   **r4pde:** dados desse pacote foram usados para exemplificar como trabalhar com mapas junto a pontos de coordenadas
+-   **ggthemes:** usado para modificar o tema do gráfico
+-   **ggspatial:** usado para adicionar a Rosa dos Ventos no mapa
+-   **plotly:** permite criar mapas interativos
+-   **leaflet:** permite criar mapas interativos completos
+-   **ggrepel:** usado para colocar nomes no mapa
+-   **scatterpie:** usado para colocar gráficos de pizza dentro do mapa
+
+```{r}
+library(tidyverse)
+library(gsheet)
+remotes::install_github("ropensci/rnaturalearthhires")
+library(rnaturalearth)
+library(rnaturalearthhires)
+library(r4pde)
+library(ggthemes)
+library(ggspatial)
+library(plotly)
+library(leaflet)
+library(ggrepel)
+library(scatterpie)
+library(knitr)
+```
+
+# Mapa tradicional
+
+Utilizando os pacotes `rnaturalearth` e `rnaturalearthhires` é possível elaborar mapas tradicionais de países e estados usando a função `ne_states()`. 
+
+O primeiro passo é atribuir o país desejado a um objeto. Depois o mapa é plotado usando a função `ggplot()` juntamente com a função `geom_sf()`. Dentro do `geom_sf()`, é possível atribuir os argumentos de cor do mapa (`fill =`), cor das linhas de divisão (`color =`) e tamanho das linhas de divisão (`linewidth =`).
+
+Abaixo foi criado os mapas do Brasil, da Colômbia e do mundo inteiro. 
+
+```{r}
+BRA <- ne_states(country = "Brazil",
+                 returnclass = "sf")
+ggplot(BRA) +
+  geom_sf(fill = "green",
+          color = "black",
+          linewidth = 1)
+
+
+COL <- ne_states(country = "Colombia",
+                 returnclass = "sf")
+ggplot(COL)+
+  geom_sf(fill = "yellow",
+          color = "black")
+
+
+world <- ne_countries()
+ggplot(world)+
+  geom_sf(fill = "white")
+```
+
+## Trabalhando com coordenadas
+
+Para criar um mapa que contenha os pontos de coordenadas, primeiramente é necessário ter um conjunto de dados que apresente as informações de latitude e longitude. Tendo esses dados, o mapa pode ser criado usando as funções `ggplot()` e `geom_point()`.
+
+Como exemplo, foi utilizado o conjunto de dados `RustSoybean` integrado ao pacote `r4pde`. Esse conjunto de dados contém as informações de latitude e longitude de cada ponto. Ao criarmos um gráfico, as coordenadas são automaticamente reconhecidas pelo `ggplot()`.
+
+```{r}
+sbr <- RustSoybean
+
+sbr |> 
+  ggplot(aes(longitude, latitude))+
+  geom_point()+
+  coord_sf()
+```
+
+Agora será adicionado esses pontos de coordenadas junto ao mapa do Brasil criado anteriormente.
+
+```{r}
+ggplot(BRA)+
+  geom_sf(fill = "green",
+          color = "black",
+          linewidth = 1)+
+  geom_point(data = sbr, aes(longitude,latitude),
+             color = "red")
+```
+
+Para retirar a grade do fundo do mapa, pode ser usado a função `theme_map()` do pacote `ggthemes`.
+
+```{r}
+ggplot(BRA)+
+  geom_sf(fill = "green",
+          color = "black",
+          linewidth = 1)+
+  geom_point(data = sbr, aes(longitude,latitude),
+             color = "red")+
+  theme_map()
+```
+
+Para adicionar a rosa-dos-ventos no mapa, pode ser usado a função `annotation_north_arrow()` do pacote `ggspatial`.
+
+```{r}
+ggplot(BRA)+
+  geom_sf(fill = "green",
+          color = "black",
+          linewidth = 0.1)+
+  geom_point(data = sbr, aes(longitude,latitude), color = "red")+
+  theme_map()+
+  annotation_north_arrow()
+```
+
+Caso seja preciso destacar ou criar um mapa de apenas um estado, pode-se filtrar o estado desejado usando a função `filter()`. 
+
+No caso abaixo, foi destacado apenas o estado de Minas Gerais.
+
+```{r}
+MG <- BRA |> 
+  filter(name_en == "Minas Gerais")
+
+ggplot(BRA)+
+  geom_sf(fill = "green",
+          color = "black")+
+  geom_sf(data = MG, fill = "yellow")+
+  geom_point(data = sbr, aes(longitude,latitude), color = "red")+
+  theme_map()
+```
+
+Neste outro caso, foi criado um mapa apenas do estado de Minas Gerais.
+
+```{r}
+ggplot(BRA)+
+  geom_sf(data = MG, fill = "yellow")+
+  theme_map()
+```
+
+## Mapa com coordenadas separadas em anos
+
+Caso o conjunto de dados tenha diferentes pontos de coordenadas em diferentes anos de experimento, pode ser criado um mapa para cada ano.
+
+Usando o mesmo conjunto de dados `RustSoybean`, o primeiro passo foi separar as datas dos dados em dias, meses e anos (no conjunto de dados essas informações estão todas juntas, sendo necessário separá-las). Isso foi feito através da função `separate()`
+
+O segundo passo foi criar o mapa usando o conjunto de dados transformado e usar a função `facet_wrap()` para dividir os mapas em diferentes anos.
+
+```{r}
+sbr2 <- sbr |>
+  separate(planting, into = 
+             c("year", "month", "day"), sep = "-", remove = FALSE)
+
+ggplot(BRA)+
+  geom_sf(fill = "white",
+          color = "black")+
+  geom_point(data = sbr2, aes(longitude,latitude, color = year), alpha = 0.5)+
+  facet_wrap(~year)+
+  theme_map()
+```
+
+
+# Mapa interativo
+
+Um mapa interativo permite interagir com os pontos de coordenada. Esse tipo de mapa pode ser construído usando a função `ggplotly()` do pacote `plotly`.
+
+No caso abaixo, foi utilizado o mesmo mapa e ponto de coordenadas trabalhados anteriormente.
+
+```{r}
+bra <- ggplot(BRA)+
+  geom_sf(fill = "green",
+          color = "black")+
+  geom_point(data = sbr, aes(longitude,latitude),
+             color = "red")
+
+ggplotly(bra)
+```
+
+## Mapa interativo inteiro
+
+Usando a função `leaflet()` do pacote `leaflet`, é possível criar um mapa interativo inteiro, que pode ser arrastado e tem as funções de *zoom in* e *zoom out*.
+
+Adicionando a função `setView()` é possível especificar os pontos de coordenada que você deseja usar. No exemplo abaixo foi colocado as coordenadas da cidade de Viçosa, MG.
+
+```{r}
+leaflet() |> 
+  addTiles()
+
+leaflet() |> 
+  addTiles() |> 
+  setView(lng = -42.8825, lat = -20.7546, zoom = 15) #Viçosa
+```
+
+Substituindo a função `addTiles()` por `addProviderTiles()`, é possível mudar o modelo do mapa.
+
+```{r}
+leaflet() |> 
+  addProviderTiles(providers$Esri.NatGeoWorldMap) |> 
+  setView(lng = -42.8825, lat = -20.7546, zoom = 5) #Viçosa
+```
+
+## Trabalhando com coordenadas
+
+Do mesmo modo, também é possível criar esse tipo de mapa com pontos de coordenadas. Usando a função `addCircleMarkers()`, os pontos aparecem no mapa interativo inteiro.
+
+Para as coordenadas dos pontos, será utilizado o mesmo conjunto de dados trabalhado nos mapas anteriores.
+
+```{r}
+leaflet(sbr) |> 
+  addTiles() |> 
+  addCircleMarkers(radius = 1)
+```
+
+# Mapa com gráficos de pizza
+
+Se você tiver um conjunto de dados que compare a incidência de diferentes doenças em um mesmo ponto de coordenada e em diferentes locais, você pode criar um mapa que contenha gráficos de pizza mostrando a incidência das doenças de planta em cada região de interesse.
+
+Para adicionar os gráficos de pizza no mapa, será usado a função `geom_scatterpie()` do pacote `scatterpie`. E para adicionar o nome dos locais, será usado a função `geom_text_repel()` do pacote `ggrepel`.
+
+Para criar esse mapa, foi usado um novo conjunto de dados, importado através da função `gsheet2tbl()` do pacote `gsheet`.
+
+```{r}
+mapa <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1pAIFKsdKxk_UQQXdYwIO-O5NOkYNhpclImJcLziYnk4/edit?usp=sharing")
+
+ggplot(BRA) +
+  geom_sf(fill = "gray70", alpha = 0.5, color = "white") +
+  coord_sf()+
+  geom_scatterpie(aes(x = lon, y = lat, r = 0.6), alpha = 0.8, color = NA, data = mapa,
+                  cols = c("DFC",
+                           "MA",
+                           "FER",
+                           "ANTR",
+                           "OIDIO"))+
+  geom_text_repel(data = mapa, aes(lon, lat, label = Local),
+                   size = 2, nudge_x = 0.2, nudge_y = 0.27, color = "gray30") +
+  ggthemes::scale_fill_calc()+
+  ggthemes::theme_map() +
+  labs(x = "Longitude", y = "Latitude", legend = "", fill = "Doença")+
+  theme(legend.position = "bottom", text = element_text(size = 8))
+```

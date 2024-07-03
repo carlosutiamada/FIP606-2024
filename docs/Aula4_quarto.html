@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>FIP606-24 - Análise exploratória 1</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./favicon.jpg" rel="icon" type="image/jpeg">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <img src="./logo.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">FIP606-24</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html" rel="" target=""><i class="bi bi-house" role="img">
+</i> 
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-sobre-o-r" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+      <i class="bi bi-r-circle-fill" role="img">
+</i> 
+ <span class="menu-text">Sobre o R</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-sobre-o-r">    
+        <li>
+    <a class="dropdown-item" href="./Aula1_quarto.html" rel="" target="">
+ <span class="dropdown-text">Introdução ao R</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Aula2_quarto.html" rel="" target="">
+ <span class="dropdown-text">Pacotes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Aula3_quarto.html" rel="" target="">
+ <span class="dropdown-text">Importação de dados</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-análise-exploratória" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+      <i class="bi bi-bar-chart" role="img">
+</i> 
+ <span class="menu-text">Análise exploratória</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-análise-exploratória">    
+        <li>
+    <a class="dropdown-item" href="./Aula4_quarto.html" rel="" target="">
+ <span class="dropdown-text">Análise exploratória 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Aula5_quarto.html" rel="" target="">
+ <span class="dropdown-text">Análise exploratória 2</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-análise-estatística" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+      <i class="bi bi-clipboard-data" role="img">
+</i> 
+ <span class="menu-text">Análise estatística</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-análise-estatística">    
+        <li>
+    <a class="dropdown-item" href="./Aula6_quarto.html" rel="" target="">
+ <span class="dropdown-text">Teste-t</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Aula7_quarto.html" rel="" target="">
+ <span class="dropdown-text">ANOVA</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Aula8_quarto.html" rel="" target="">
+ <span class="dropdown-text">ANOVA em blocos casualizados</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Aula9_quarto.html" rel="" target="">
+ <span class="dropdown-text">Regressão</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Aula10_quarto.html" rel="" target="">
+ <span class="dropdown-text">Correlação</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="./Aula11_quarto.html" rel="" target=""><i class="bi bi-map" role="img">
+</i> 
+ <span class="menu-text">Mapas</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/carlosutiamada" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/carlosakirautiamada/" rel="" target=""><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.instagram.com/carlos.akira.utiamada/" rel="" target=""><i class="bi bi-instagram" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#criação-de-gráficos" id="toc-criação-de-gráficos" class="nav-link active" data-scroll-target="#criação-de-gráficos">Criação de gráficos</a></li>
+  <li><a href="#tipos-de-gráficos" id="toc-tipos-de-gráficos" class="nav-link" data-scroll-target="#tipos-de-gráficos">Tipos de gráficos</a></li>
+  <li><a href="#conjunto-de-dados-1" id="toc-conjunto-de-dados-1" class="nav-link" data-scroll-target="#conjunto-de-dados-1">Conjunto de dados 1</a>
+  <ul class="collapse">
+  <li><a href="#trabalhando-com-o-gráfico-de-pontos" id="toc-trabalhando-com-o-gráfico-de-pontos" class="nav-link" data-scroll-target="#trabalhando-com-o-gráfico-de-pontos">Trabalhando com o gráfico de pontos</a>
+  <ul class="collapse">
+  <li><a href="#temas-e-legendas" id="toc-temas-e-legendas" class="nav-link" data-scroll-target="#temas-e-legendas">Temas e legendas</a></li>
+  </ul></li>
+  <li><a href="#trabalhando-com-boxplot" id="toc-trabalhando-com-boxplot" class="nav-link" data-scroll-target="#trabalhando-com-boxplot">Trabalhando com boxplot</a></li>
+  </ul></li>
+  <li><a href="#conjunto-de-dados-2" id="toc-conjunto-de-dados-2" class="nav-link" data-scroll-target="#conjunto-de-dados-2">Conjunto de dados 2</a>
+  <ul class="collapse">
+  <li><a href="#trabalhando-com-histogramas-sobre-a-incidência" id="toc-trabalhando-com-histogramas-sobre-a-incidência" class="nav-link" data-scroll-target="#trabalhando-com-histogramas-sobre-a-incidência">Trabalhando com histogramas sobre a incidência</a></li>
+  <li><a href="#trabalhando-com-boxplot-sobre-a-incidência" id="toc-trabalhando-com-boxplot-sobre-a-incidência" class="nav-link" data-scroll-target="#trabalhando-com-boxplot-sobre-a-incidência">Trabalhando com boxplot sobre a incidência</a></li>
+  <li><a href="#sumário-da-incidência" id="toc-sumário-da-incidência" class="nav-link" data-scroll-target="#sumário-da-incidência">Sumário da incidência</a></li>
+  <li><a href="#trabalhando-com-gráfico-de-dispersão-entre-incidência-e-severidade" id="toc-trabalhando-com-gráfico-de-dispersão-entre-incidência-e-severidade" class="nav-link" data-scroll-target="#trabalhando-com-gráfico-de-dispersão-entre-incidência-e-severidade">Trabalhando com gráfico de dispersão entre incidência e severidade</a></li>
+  <li><a href="#trabalhando-com-histogramas-e-sumário-de-severidade" id="toc-trabalhando-com-histogramas-e-sumário-de-severidade" class="nav-link" data-scroll-target="#trabalhando-com-histogramas-e-sumário-de-severidade">Trabalhando com histogramas e sumário de severidade</a></li>
+  <li><a href="#trabalhando-com-histograma-sobre-severidade-por-região-e-cultivar" id="toc-trabalhando-com-histograma-sobre-severidade-por-região-e-cultivar" class="nav-link" data-scroll-target="#trabalhando-com-histograma-sobre-severidade-por-região-e-cultivar">Trabalhando com histograma sobre severidade por região e cultivar</a></li>
+  <li><a href="#criando-subconjuntos-com-select-e-filter" id="toc-criando-subconjuntos-com-select-e-filter" class="nav-link" data-scroll-target="#criando-subconjuntos-com-select-e-filter">Criando subconjuntos com select e filter</a></li>
+  <li><a href="#visualização-dos-subconjuntos" id="toc-visualização-dos-subconjuntos" class="nav-link" data-scroll-target="#visualização-dos-subconjuntos">Visualização dos subconjuntos</a></li>
+  <li><a href="#juntando-gráficos-com-o-patchwork" id="toc-juntando-gráficos-com-o-patchwork" class="nav-link" data-scroll-target="#juntando-gráficos-com-o-patchwork">Juntando gráficos com o patchwork</a></li>
+  <li><a href="#colocando-um-gráfico-dentro-de-outro" id="toc-colocando-um-gráfico-dentro-de-outro" class="nav-link" data-scroll-target="#colocando-um-gráfico-dentro-de-outro">Colocando um gráfico dentro de outro</a></li>
+  </ul></li>
+  <li><a href="#salvar-imagens" id="toc-salvar-imagens" class="nav-link" data-scroll-target="#salvar-imagens">Salvar imagens</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Análise exploratória 1</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="criação-de-gráficos" class="level1">
+<h1>Criação de gráficos</h1>
+<p>Após a importação de um conjunto de dados, uma <strong>análise exploratória</strong> com montagem de gráficos pode ser feita com o objetivo de analisar e resumir os dados. Para a criação do gráfico, pode ser usada a função <code>ggplot()</code> do pacote <code>tidyverse</code>. Dentro dessa função, é possível ir modificando o gráfico como desejar por meio dos seus argumentos. Usa-se o argumento <code>aes()</code>para especificar qual das variáveis irá compor o eixo X e eixo Y do gráfico. Por exemplo, ao colocar <code>aes(trat,comp)</code> está especificando que a variável <code>trat</code> representará o eixo X e a variável <code>comp</code> representará o eixo Y.</p>
+<p>Para continuar adicionando funções dentro de um mesmo pipe, deve-se colocar o sinal <code>+</code>. O tipo de gráfico que será criado dependerá da função <code>geom_</code>, podendo ser um gráfico de pontos se usar <code>geom_point()</code> ou um gráfico boxplot se usar <code>geom_boxplot()</code>. Há também vários outros tipos que podem ser utilizados dependendo da função.</p>
+</section>
+<section id="tipos-de-gráficos" class="level1">
+<h1>Tipos de gráficos</h1>
+<ul>
+<li><p><strong>Gráfico de pontos</strong>: Os pontos são usados para representar cada valor da variável resposta em função do eixo X, que pode ser um fator numérico ou categórico. Esse tipo de gráfico pode ser formado pelas funções <code>geom_point()</code> ou <code>geom_jitter()</code>.</p></li>
+<li><p><strong>Gráfico de colunas ou barras</strong>: Os gráficos de barras ou colunas são uma forma de representar valores numéricos associados a categorias. Podem ser usados para representar frequências de fatores. A função <code>geom_col()</code> é usada para criar esse tipo de gráfico.</p></li>
+<li><p><strong>Gráfico de dispersão</strong>: Representam uma (ou várias) variáveis numéricas (ditas dependentes) no eixo Y em função de outra no eixo X (dita independente). Esse tipo de gráfico pode ser formado pela função <code>geom_point()</code>.</p></li>
+<li><p><strong>Gráfico boxplot</strong>: Os boxplots servem para visualizar a distribuição de valores de uma variável numérica mostrando algumas medidas de estatística descritiva de forma gráfica. O boxplot típico é formado por uma linha central que representa a mediana, uma zona retangular cujo lado superior é dado pelo terceiro quartil e o inferior pelo primeiro quartil e um traço superior e inferior que representam, respectivamente, os valores máximos e mínimos. O boxplot é criado usando a função <code>geom_boxplot()</code>.</p></li>
+<li><p><strong>Histograma</strong>: Os histogramas são gráficos bastante simples que permitem caracterizar a distribuição de frequência de valores de uma variável. Nos histogramas, a altura de cada retângulo é proporcional ao número de observações do intervalo de valores na base. O histograma pode ser criado usando a função <code>geom_histogram()</code>.</p></li>
+<li><p><strong>Gráfico de linhas</strong>: Muito comum para uma resposta numérica contínua em um fator quantitativo (como dose) ou temporal (de tempo). Para esse gráfico é usado a função <code>geom_line()</code>.</p></li>
+<li><p><strong>Gráfico errorbar</strong>: Gráfico de pontos ou de colunas que apresentam uma faixa de variabilidade ou barra de erro. Essa variabilidade por ser desvio padrão, erro padrão ou intervalo de confiança. Pode ser criado usando a função <code>geom_errorbar()</code></p></li>
+</ul>
+</section>
+<section id="conjunto-de-dados-1" class="level1">
+<h1>Conjunto de dados 1</h1>
+<p>Nesse primeiro conjunto de dados (importado a partir do Google Sheets), está sendo trabalhado uma variável resposta (comprimento de plantas) em função de dois tratamentos diferentes: a aplicação de Mg2 e o controle (sem aplicação de Mg2).</p>
+<p>O primeiro passo é a importação dos dados e o carregamento dos pacotes que serão utilizados.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gsheet)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>dados <span class="ot">&lt;-</span> <span class="fu">gsheet2tbl</span>(<span class="st">"https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit?gid=983033137#gid=983033137"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Com esse conjunto de dados, pode-se trabalhar com 2 análises exploratórias diferentes: o gráfico de pontos e o boxplot.</p>
+<section id="trabalhando-com-o-gráfico-de-pontos" class="level2">
+<h2 class="anchored" data-anchor-id="trabalhando-com-o-gráfico-de-pontos">Trabalhando com o gráfico de pontos</h2>
+<p>Dentro da função <code>geom_point</code>, determina-se a cor dos pontos com o argumento <code>color =</code>, o formato dos pontos com o argumento <code>shape =</code> e o tamanho dos pontos com o argumento <code>size =</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> dados<span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(trat, comp))<span class="sc">+</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">shape =</span> <span class="dv">2</span>, <span class="at">size =</span> <span class="dv">3</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>g1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula4_quarto_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<section id="temas-e-legendas" class="level3">
+<h3 class="anchored" data-anchor-id="temas-e-legendas">Temas e legendas</h3>
+<p>Outras adições que podem ser feitas com o gráfico é modificar o seu tema e adicionar títulos e legendas. Existem diversas funções para modificar o tema do gráfico, entre eles o <code>theme_classic()</code> ou então o <code>theme_bw()</code>. Para adicionar algum texto no gráfico, usa-se a função <code>labs()</code>, com isso pode-se adicionar um nome para o eixo X e para o eixo Y e também adicionar um título para o gráfico e uma legenda.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>g1 <span class="sc">+</span> <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Tratamento"</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Comprimento"</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Meu primeiro ggplot"</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Fonte: Dados diversos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula4_quarto_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="trabalhando-com-boxplot" class="level2">
+<h2 class="anchored" data-anchor-id="trabalhando-com-boxplot">Trabalhando com boxplot</h2>
+<p>Além do <code>geom_point()</code> é possível usar também o <code>geom_boxplot()</code> para criar um gráfico boxplot ou o <code>geom_jitter()</code> para criar um gráfico de pontos separados, não agrupados. No <code>geom_boxplot()</code> tem os argumentos <code>outlier.colour = NA</code> para não duplicar o outlier e o <code>fill =</code> para adicionar uma cor ao quadrado do boxplot.</p>
+<p>No <code>geom_jitter()</code> pode ser usado os argumentos <code>width =</code> para modificar a largura, <code>color =</code> para mudar a cor, <code>shape =</code> para mudar o formato e <code>size =</code> para mudar o tamanho dos pontos.</p>
+<p>As funções <code>ylim()</code> e <code>scale_y_continuous()</code> podem ser usados para definir ou delimitar os valores que aparecem no eixo Y.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>g2 <span class="ot">&lt;-</span> dados <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(trat, comp))<span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour =</span> <span class="cn">NA</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">fill =</span> <span class="st">"orange"</span>)<span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.05</span>, </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">"black"</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">shape =</span> <span class="dv">1</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">size =</span> <span class="dv">3</span>) </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>g2 <span class="sc">+</span> <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Tratamento"</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Comprimento (mm)"</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Meu primeiro ggplot"</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Fonte: Dados diversos"</span>)<span class="sc">+</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>,<span class="dv">20</span>) <span class="sc">+</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">20</span>),</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>                     <span class="at">n.breaks =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula4_quarto_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="conjunto-de-dados-2" class="level1">
+<h1>Conjunto de dados 2</h1>
+<p>O segundo conjunto de dados está em um link na web no formato <em>csv</em>, que foi importado usando a função <code>read_csv()</code>.</p>
+<p>Para uma breve descrição dos conteúdos do dado, pode ser usado a função <code>glimpse()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>cr <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://raw.githubusercontent.com/emdelponte/paper-coffee-rust-Ethiopia/master/data/survey_clean.csv"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(cr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 405
+Columns: 13
+$ farm            &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,…
+$ region          &lt;chr&gt; "SNNPR", "SNNPR", "SNNPR", "SNNPR", "SNNPR", "SNNPR", …
+$ zone            &lt;chr&gt; "Bench Maji", "Bench Maji", "Bench Maji", "Bench Maji"…
+$ district        &lt;chr&gt; "Debub Bench", "Debub Bench", "Debub Bench", "Debub Be…
+$ lon             &lt;dbl&gt; 35.44250, 35.44250, 35.42861, 35.42861, 35.42861, 35.3…
+$ lat             &lt;dbl&gt; 6.904722, 6.904722, 6.904444, 6.904444, 6.904444, 6.90…
+$ altitude        &lt;dbl&gt; 1100, 1342, 1434, 1100, 1400, 1342, 1432, 1100, 1400, …
+$ cultivar        &lt;chr&gt; "Local", "Mixture", "Mixture", "Local", "Local", "Mixt…
+$ shade           &lt;chr&gt; "Sun", "Mid shade", "Mid shade", "Sun", "Sun", "Mid sh…
+$ cropping_system &lt;chr&gt; "Plantation", "Plantation", "Plantation", "Plantation"…
+$ farm_management &lt;chr&gt; "Unmanaged", "Minimal", "Minimal", "Unmanaged", "Unman…
+$ inc             &lt;dbl&gt; 86.70805, 51.34354, 43.20000, 76.70805, 47.15808, 51.3…
+$ sev2            &lt;dbl&gt; 55.57986, 17.90349, 8.25120, 46.10154, 12.25167, 19.91…</code></pre>
+</div>
+</div>
+<p>Pode-se observar que o trabalho envolve a incidência e severidade da doença da ferrugem do café em 405 fazendas diferentes. A incidência é a presença ou ausência da doença no material que foi amostrado, enquanto que a severidade é a quantidade de doença presente na amostra com incidência positiva.</p>
+<p>Esse conjunto de dados envolve 2 principais fatores: a região (SNNPR e Oromia) e a cultivar (Improved, Mixture e Local).</p>
+<p>A análise exploratória pode ser trabalhada com as duas variáveis respostas.</p>
+<section id="trabalhando-com-histogramas-sobre-a-incidência" class="level2">
+<h2 class="anchored" data-anchor-id="trabalhando-com-histogramas-sobre-a-incidência">Trabalhando com histogramas sobre a incidência</h2>
+<p>Para visualizar esse conjunto de dados, pode ser feito uma análise exploratória utilizando o histograma. O histograma serve para visualizar uma distribuição contínua apresentado as frequências de determinados resultados. Para criar o histograma, usa-se a função <code>ggplot()</code> juntamente com <code>geom_histogram()</code>. Como o conjunto de dados se refere a 2 regiões diferentes, pode-se realizar um histograma por região usando o <code>facet_wrap(~region)</code>, dessa forma as duas regiões ficam separadas.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>cr <span class="sc">|&gt;</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> inc))<span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()<span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>region)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula4_quarto_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="trabalhando-com-boxplot-sobre-a-incidência" class="level2">
+<h2 class="anchored" data-anchor-id="trabalhando-com-boxplot-sobre-a-incidência">Trabalhando com boxplot sobre a incidência</h2>
+<p>Também pode ser observado os dados através de um gráfico em boxplot. Cria-se esse gráfico com a função <code>geom_boxplot()</code>. O boxplot irá fornecer a variação de dados observados de uma variável numérica por meio de quartis, sendo que a caixa é delimitada pelo primeiro e terceiro quartil e a linha dentro da caixa representa a mediana.</p>
+<p>Os valores da mediana e do primeiro e terceiro quartil podem ser encontrados através da função <code>summary()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>cr <span class="sc">|&gt;</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> inc))<span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula4_quarto_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cr<span class="sc">$</span>inc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   9.50   19.43   32.50   34.89   48.20   86.71 </code></pre>
+</div>
+</div>
+</section>
+<section id="sumário-da-incidência" class="level2">
+<h2 class="anchored" data-anchor-id="sumário-da-incidência">Sumário da incidência</h2>
+<p>Para observar valores como média, desvio padrão e mediana, pode ser usado a função <code>summerise()</code>e os argumentos <code>mean()</code>, <code>sd()</code> e <code>median()</code>. Mas antes disso, será agrupado os dados pela região, separando dessa forma as duas regiões diferentes novamente. Isso pode ser feito com a função <code>group_by()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>cr <span class="sc">|&gt;</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(region) <span class="sc">|&gt;</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">inc_mean =</span> <span class="fu">mean</span>(inc),</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd_mean =</span> <span class="fu">sd</span>(inc),</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">inc_med =</span> <span class="fu">median</span>(inc))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 4
+  region inc_mean sd_mean inc_med
+  &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+1 Oromia     37.0    14.6    39.5
+2 SNNPR      33.4    18.9    29.6</code></pre>
+</div>
+</div>
+<p>Posteriormente, também foi feito a sumarização agrupando os dados à nível de cultivar.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>cr <span class="sc">|&gt;</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(cultivar) <span class="sc">|&gt;</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">inc_mean =</span> <span class="fu">mean</span>(inc),</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd_mean =</span> <span class="fu">sd</span>(inc),</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">inc_med =</span> <span class="fu">median</span>(inc))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 4
+  cultivar inc_mean sd_mean inc_med
+  &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+1 Improved     16.4    5.66    15.2
+2 Local        53.4   14.3     50.9
+3 Mixture      31.9   11.2     31.6</code></pre>
+</div>
+</div>
+</section>
+<section id="trabalhando-com-gráfico-de-dispersão-entre-incidência-e-severidade" class="level2">
+<h2 class="anchored" data-anchor-id="trabalhando-com-gráfico-de-dispersão-entre-incidência-e-severidade">Trabalhando com gráfico de dispersão entre incidência e severidade</h2>
+<p>Também pode ser criado um gráfico de dispersão para mostrar a relação entre incidência e severidade, usando a função <code>geom_point()</code>. O gráfico de dispersão de pontos é um tipo de gráfico que pode ser utilizado quando as variáveis X e Y são contínuas e apresentam relação entre as respostas.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>cr <span class="sc">|&gt;</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(inc, sev2))<span class="sc">+</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula4_quarto_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Por meio desse gráfico, é possível observar que conforme a incidência aumenta, a severidade também aumenta.</p>
+</section>
+<section id="trabalhando-com-histogramas-e-sumário-de-severidade" class="level2">
+<h2 class="anchored" data-anchor-id="trabalhando-com-histogramas-e-sumário-de-severidade">Trabalhando com histogramas e sumário de severidade</h2>
+<p>Do mesmo modo, foi feito um histograma sobre a variável severidade separando as duas regiões.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>cr <span class="sc">|&gt;</span> </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> sev2))<span class="sc">+</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()<span class="sc">+</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>region)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula4_quarto_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Também foi feito a sumarização da severidade agrupando os dados à nível de cultivar.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>cr <span class="sc">|&gt;</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(cultivar) <span class="sc">|&gt;</span> </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">sev_mean =</span> <span class="fu">mean</span>(sev2),</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">sev_sd =</span> <span class="fu">sd</span>(sev2),</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">sev_med =</span> <span class="fu">median</span>(sev2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 4
+  cultivar sev_mean sev_sd sev_med
+  &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+1 Improved     2.16   1.82    1.64
+2 Local       18.7   11.1    17.2 
+3 Mixture      6.47   4.35    5.43</code></pre>
+</div>
+</div>
+<p>Ao criar um histograma sobre a variável severidade agrupando os dados em função da cultivar, pode-se notar que a distribuição da severidade é mais simétrica</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>cr <span class="sc">|&gt;</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> sev2))<span class="sc">+</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()<span class="sc">+</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>cultivar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula4_quarto_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="trabalhando-com-histograma-sobre-severidade-por-região-e-cultivar" class="level2">
+<h2 class="anchored" data-anchor-id="trabalhando-com-histograma-sobre-severidade-por-região-e-cultivar">Trabalhando com histograma sobre severidade por região e cultivar</h2>
+<p>Para comparar os histogramas de severidade agrupados por região e por cultivar, pode-se colocar o argumento <code>facet_grid(region ~ cultivar)</code>. Desse modo, ele irá criar um histograma para cada relação entre os níveis de região e cultivar.</p>
+<p>No gráfico abaixo foi utilizado a função <code>scale_fill_colorblind()</code> do pacote <code>ggthemes</code> para adicionar cores ao gráfico.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggthemes)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>cr <span class="sc">|&gt;</span> </span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> sev2, <span class="at">fill =</span> region))<span class="sc">+</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">color =</span> <span class="st">"white"</span>)<span class="sc">+</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(region <span class="sc">~</span> cultivar)<span class="sc">+</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_colorblind</span>()<span class="sc">+</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)<span class="sc">+</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)<span class="sc">+</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Frequency"</span>,</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Severity (%)"</span>, <span class="at">fill =</span> <span class="st">"Region"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula4_quarto_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="criando-subconjuntos-com-select-e-filter" class="level2">
+<h2 class="anchored" data-anchor-id="criando-subconjuntos-com-select-e-filter">Criando subconjuntos com select e filter</h2>
+<p>A função <code>select()</code> é feita para selecionar colunas, enquanto a função <code>filter()</code> é feita para filtrar linhas. Usando essas funções do pacote <code>dplyr</code>, será criado subconjuntos: o primeiro irá agrupar os dados sobre as fazendas, cultivares e severidade referentes à região de Oromia enquanto que o segundo irá agrupar essas mesmas informações referentes à região de SNNPR.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Subconjunto Oromia</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>cr_oromia <span class="ot">&lt;-</span> cr <span class="sc">|&gt;</span> </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(farm, region, cultivar, sev2) <span class="sc">|&gt;</span> </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(region <span class="sc">==</span> <span class="st">"Oromia"</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>cr_oromia</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 165 × 4
+    farm region cultivar  sev2
+   &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt;
+ 1   286 Oromia Mixture   7.63
+ 2   287 Oromia Mixture   9.39
+ 3   288 Oromia Mixture   1.30
+ 4   289 Oromia Mixture   9.79
+ 5   290 Oromia Local    18.5 
+ 6   291 Oromia Mixture  13.2 
+ 7   292 Oromia Mixture   5.60
+ 8   293 Oromia Mixture   1.06
+ 9   294 Oromia Local    17.6 
+10   295 Oromia Mixture  15.4 
+# ℹ 155 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Subconjunto SNNPR</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>cr_pr <span class="ot">&lt;-</span> cr <span class="sc">|&gt;</span> </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(farm, region, cultivar, sev2) <span class="sc">|&gt;</span> </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(region <span class="sc">==</span> <span class="st">"SNNPR"</span>)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>cr_pr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 240 × 4
+    farm region cultivar  sev2
+   &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt;
+ 1     1 SNNPR  Local    55.6 
+ 2     2 SNNPR  Mixture  17.9 
+ 3     3 SNNPR  Mixture   8.25
+ 4     4 SNNPR  Local    46.1 
+ 5     5 SNNPR  Local    12.3 
+ 6     6 SNNPR  Mixture  19.9 
+ 7     7 SNNPR  Mixture  11.9 
+ 8     8 SNNPR  Local    55.6 
+ 9     9 SNNPR  Local    11.6 
+10    10 SNNPR  Mixture  11.4 
+# ℹ 230 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="visualização-dos-subconjuntos" class="level2">
+<h2 class="anchored" data-anchor-id="visualização-dos-subconjuntos">Visualização dos subconjuntos</h2>
+<p>Tendo criado os subconjuntos, foi feito um gráfico boxplot para a visualização de cada um deles.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> cr_oromia <span class="sc">|&gt;</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(cultivar, sev2, <span class="at">fill =</span> cultivar))<span class="sc">+</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()<span class="sc">+</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()<span class="sc">+</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Cultivar"</span>,</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Severity (%)"</span>)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>p1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula4_quarto_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> cr_pr <span class="sc">|&gt;</span> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(cultivar, sev2, <span class="at">fill =</span> cultivar))<span class="sc">+</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()<span class="sc">+</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()<span class="sc">+</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Cultivar"</span>,</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Severity (%)"</span>)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula4_quarto_files/figure-html/unnamed-chunk-16-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="juntando-gráficos-com-o-patchwork" class="level2">
+<h2 class="anchored" data-anchor-id="juntando-gráficos-com-o-patchwork">Juntando gráficos com o patchwork</h2>
+<p>Através do pacote <code>patchwork</code>, é possível juntar dois ou mais gráficos em uma única imagem. Os gráficos podem ficar um do lado do outro</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span> p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula4_quarto_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Ou também um em cima do outro.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">/</span> p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula4_quarto_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Para que os gráficos compartilhem a mesma legenda e o mesmo nome dos eixos, pode ser usado as funções <code>plot_layout()</code> e <code>plot_annotation()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>(p1 <span class="sc">/</span> p2) <span class="sc">+</span> </span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_layout</span>(<span class="at">guides =</span> <span class="st">"collect"</span>,</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">axes =</span> <span class="st">"collect"</span>)<span class="sc">+</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(<span class="at">tag_levels =</span> <span class="st">'A'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula4_quarto_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Adicionando as funções <code>theme_few()</code> e <code>scale_fill_few()</code> é possível alterar o tema e as cores do gráfico.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>p11 <span class="ot">&lt;-</span> cr_oromia <span class="sc">|&gt;</span> </span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(cultivar, sev2, <span class="at">fill =</span> cultivar))<span class="sc">+</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()<span class="sc">+</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_few</span>()<span class="sc">+</span>           <span class="co">#Para mudar o formato/estilo do gráfico</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_few</span>()<span class="sc">+</span>   <span class="co">#Para mudar a cor</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()<span class="sc">+</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Cultivar"</span>,</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Severity (%)"</span>)</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>p11</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula4_quarto_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>p22 <span class="ot">&lt;-</span> cr_pr <span class="sc">|&gt;</span> </span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(cultivar, sev2, <span class="at">fill =</span> cultivar))<span class="sc">+</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()<span class="sc">+</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_few</span>()<span class="sc">+</span>           <span class="co">#Para mudar o formato/estilo do gráfico</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_few</span>()<span class="sc">+</span>   <span class="co">#Para mudar a cor</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()<span class="sc">+</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Cultivar"</span>,</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Severity (%)"</span>)</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>p22</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula4_quarto_files/figure-html/unnamed-chunk-20-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Colocando título e fonte na imagem.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>(p11 <span class="sc">/</span> p22) <span class="sc">+</span> </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_layout</span>(<span class="at">guides =</span> <span class="st">"collect"</span>,</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">axes =</span> <span class="st">"collect"</span>)<span class="sc">+</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(<span class="at">title =</span> <span class="st">"Coffe rust in Ethiopia"</span>,</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">caption =</span> <span class="st">"Source: Del Ponte (2022)"</span>,</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">tag_levels =</span> <span class="st">'A'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula4_quarto_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="colocando-um-gráfico-dentro-de-outro" class="level2">
+<h2 class="anchored" data-anchor-id="colocando-um-gráfico-dentro-de-outro">Colocando um gráfico dentro de outro</h2>
+<p>Usando ainda o pacote <code>patchwork</code>, é possível inserir um gráfico dentro de outro gráfico.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> cr_oromia <span class="sc">|&gt;</span> </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> sev2))<span class="sc">+</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span> <span class="fu">inset_element</span>(p3, <span class="at">left =</span> <span class="fl">0.6</span>, <span class="at">bottom =</span> <span class="fl">0.6</span>, <span class="at">right =</span> <span class="dv">1</span>, <span class="at">top =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula4_quarto_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="salvar-imagens" class="level1">
+<h1>Salvar imagens</h1>
+<p>Para salvar o último gráfico rodado no R, pode-se utilizar a função <code>ggsave()</code> especificando o nome com que o arquivo será salvo e a cor de fundo da imagem. A imagem será salva dentro da pasta contendo o RStudio Project.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>g1 <span class="sc">+</span> <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Tratamento"</span>,</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Comprimento (mm)"</span>,</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Meu primeiro ggplot"</span>,</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Fonte: Dados diversos"</span>)<span class="sc">+</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">20</span>),</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">n.breaks =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula4_quarto_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"plot1.png"</span>, <span class="at">bg =</span> <span class="st">"white"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

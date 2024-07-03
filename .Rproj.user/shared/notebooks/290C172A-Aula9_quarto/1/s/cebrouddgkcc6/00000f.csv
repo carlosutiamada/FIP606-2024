@@ -1,0 +1,5 @@
+"0","pyra2 <- pyra |> 
+  group_by(code, state, dose) |> 
+  summarise(mean_germination = mean(germination))
+"
+"2","`summarise()` has grouped output by 'code', 'state'. You can override using the `.groups` argument."

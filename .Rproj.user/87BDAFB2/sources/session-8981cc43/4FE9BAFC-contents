@@ -1,0 +1,495 @@
+---
+title: "ANOVA"
+format: html
+message: false
+warning: false
+---
+
+# Teste de hipótese de três ou mais grupos independentes
+
+A **Análise de Variância (ou ANOVA)** é uma técnica estatística usada para comparar a média de três ou mais grupos e determinar se há diferenças significativas entre eles.
+
+No caso da ANOVA, as hipóteses formuladas são as seguintes: - **Hipótese nula (Ho)**: as médias dos grupos não diferem entre si - **Hipótese alternativa (Ha)**: pelo menos a média de um dos grupos difere das demais
+
+Quando o conjunto de dados apresenta um único fator, a análise de variância realizada é denominada de *One-Way ANOVA* ou *ANOVA unifatorial*.
+
+Quando o conjunto de dados apresenta dois fatores, a análise de variância realizada é denominada de *Two-Way ANOVA* ou *ANOVA fatorial*.
+
+## Importação dos dados
+
+Usando a função `gsheet2tbl()` do pacote `gsheet`, foi importado um conjunto de dados envolvendo 5 grupos independentes.
+
+```{r}
+library(gsheet)
+micelial <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit#gid=959387827")
+```
+
+## Visualização dos dados
+
+Para a visualização dos dados, foi usada a função `ggplot()` juntamente com o `geom_jitter()`. Como o conjunto de dados possui apenas 6 repetições para cada grupo, é preferível usar o jitter que o boxplot.
+
+```{r}
+library(tidyverse)
+micelial |> 
+  ggplot(aes(especie, tcm))+
+  geom_jitter(width = 0.05)
+```
+
+Pode-se observar que há uma variabilidade visível entre os diferentes grupos, podendo inferir que uma das médias será diferente das demais.
+
+## ANOVA
+
+Para executar uma análise de variância com o conjunto de dados trabalhado, o primeiro passo é ajustar os dados em um modelo linear. Esse ajuste é realiza através da função `lm()`, no qual a fórmula `tcm ~ especie` especifica que tcm (a variável resposta) está sendo modelada em função de especie (a variável preditora).
+
+```{r}
+m1 <- lm(tcm ~ especie, data = micelial)
+```
+
+Para exibir um resumo detalhado do modelo ajustado, pode ser utilizada a função `summary()`. Ela fornece as seguintes informações: - **Coeficientes**: Estimativas dos parâmetros do modelo (intercepto e coeficientes para cada nível de especie). - **Erro padrão**: Medida da precisão das estimativas dos coeficientes. - **Estatística t e valor p**: Usados para testar a hipótese nula de que cada coeficiente é igual a zero (sem efeito). - **R\^2 e R\^2 ajustado**: Medidas da qualidade do ajuste do modelo aos dados. - **Estatística F**: Teste global de significância do modelo.
+
+```{r}
+summary(m1)
+
+#Se quisermos fazer o summary sem interceptar uma espécie:
+m2 <- lm(tcm ~ especie -1, data = micelial)
+summary(m2)
+```
+
+Por fim, a análise de variância é executada usando a função `anova()`. Ela fornece as seguintes informações: - **Df**: Graus de liberdade associados ao modelo e aos resíduos. - **Sum Sq**: Soma dos quadrados (Soma dos quadrados do modelo e dos resíduos). - **Mean Sq**: Quadrados médios (Soma dos quadrados dividida pelos graus de liberdade correspondentes). - **F value**: Estatística F (razão dos quadrados médios do modelo e dos resíduos). - **Pr(\>F)**: Valor p associado à estatística F, usado para testar a hipótese nula de que todos os coeficientes (exceto o intercepto) são iguais a zero.
+
+```{r}
+anova(m1)
+```
+
+Como o p-valor foi inferior ao nível de significância (5%), podemos rejeitar a hipótese nula de que todos os grupos são iguais. Logo, pelo menos uma das médias difere estatisticamente das demais.
+
+Contudo, através da ANOVA não é possível saber qual dos grupos difere das demais ou se há mais de um grupo que difere estatisticamente.
+
+## Teste de Tukey
+
+Para saber qual média está se diferindo das demais, deve ser utilizado um teste de comparação de médias, como o Teste de Tukey.
+
+Para realizar esse teste, primeiramente foi usada a função `emmeans()` do pacote `emmeans` para obter as médias da variável resposta em função das espécies (grupos).
+
+```{r}
+library(emmeans)
+medias1 <- emmeans(m1, ~ especie)
+medias1
+```
+
+Usando a função `cld()` e argumento `Letters = letters` dos pacotes `multcomp`e `multcompView`, é possível visualizar a diferença entre os grupos através do agrupamento das médias estatisticamente iguais representadas pela mesma letra.
+
+```{r}
+library(multcomp)
+library(multcompView)
+cld(medias1, Letters = letters)
+```
+
+Observando o resultado do Teste de Tukey, ocorreu a formação de 3 grupos estatisticamente distintos. Pode-se inferir que a espécie *Fgra* difere estatisticamente de todas as outras espécies. A espécie *Fasi* só não difere estatisticamente da espécie *Fmer*. As espécies *Faus* e *Fcor* não diferem entre si e não diferem de *Fmer*, mas diferem do resto das espécies.
+
+## Teste das premissas
+
+Na Análise de Variância, as premissas de normalidade e de homocedasticidade também devem ser atendidas.
+
+O teste de normalidade nesse caso é feito com os *residuals* (é cada diferença entre a média estimada e o valor original).
+
+```{r}
+hist(m1$residuals)
+shapiro.test(m1$residuals)
+```
+
+Observa-se que não rejeita a hipótese nula, ou seja, os dados são normais.
+
+O teste de variância para três ou mais grupos independentes é feito com o Bartlett-test. Ele é executado usando a função `bartlett.test()`.
+
+```{r}
+bartlett.test(tcm ~ especie, data = micelial)
+#Não rejeita a hipótese nula --> são homogêneas
+```
+
+Nota-se que a hipótese nula não é rejeitada, indicando que as variâncias são homogêneas.
+
+### Checando as premissas pelo pacote DHARMa
+
+Outra forma de checar se as premissas foram atendidas é através da função `simulateResiduals()` do pacote `DHARMa`.
+
+```{r}
+library(DHARMa)
+plot(simulateResiduals(m1))
+```
+
+O gráfico da esquerda é um QQ plot dos *residuals*, ele compara a distribuição dos resíduos simulados com a distribuição teórica esperada (geralmente a normal). Os pontos devem seguir a linha diagonal. Desvios significativos da linha indicam que os resíduos não seguem a distribuição esperada, sugerindo que o modelo pode estar mal ajustado. Nesse caso não foi observado nenhum desvio.
+
+O gráfico da direita mostra os resíduos simulados em função dos valores preditos pelo modelo. Para que a premissa da homocedasticidade seja atendida, não deve haver nenhum padrão evidente. Padrões ou tendências podem indicar falta de ajuste, variância não constante ou relações não modeladas entre as variáveis.
+
+### Checando as premissas pelo pacote performance
+
+Outra forma de checar as premissas é através das funções `check_normality()` e `check_heteroscedasticity()` do pacote `performance`. Eles conferem se os dados apresentam distribuição normal e variâncias homogêneas de forma automática.
+
+```{r}
+library(performance)
+check_normality(m1)
+check_heteroscedasticity(m1)
+```
+
+# ANOVA de dados não-paramétricos
+
+Ao realizar uma análise de variância, as premissas de normalidade e de homocedasticidade podem não ser atendidas. Nesse caso, é necessário adotar algumas medidas para resolver a análise.
+
+Existem 3 alternativas que podem ser adotadas para que as premissas sejam atendidas: - **Transformação dos dados** - **Teste não-paramétrico** - **GLM**
+
+## Importação dos dados
+
+Foi importando um dataframe nativo do R, denominado de `InsectSprays`.
+
+```{r}
+inseticida <- InsectSprays
+```
+
+Para contar quantos inseticidas diferentes foram usados, foi executado a função `count()`.
+
+```{r}
+inseticida |> 
+  count(spray)
+```
+
+## Visualização dos dados
+
+Para visualizar os dados, foi criado um gráfico de boxplot e de pontos usando as funções `ggplot()`, `geom_boxplot()` e `geom_jitter()`.
+
+```{r}
+inseticida |> 
+  ggplot(aes(spray, count))+
+  geom_jitter(width = 0.05)+
+  geom_boxplot()
+```
+
+Pela assimetria dos boxplots e pela suas estruturas, já é possível prever que o conjunto de dados não atende as premissas de normalidade e homocedasticidade.
+
+## ANOVA
+
+Para realizar a análise de variância, os dados foram ajustado ao modelo linear pela função `lm()` e foi executado a `anova()`.
+
+```{r}
+m2 <- lm(count ~ spray, data = inseticida)
+summary(m2)
+anova(m2)
+```
+
+Com o p-valor inferior ao nível de significância, a hipótese nula é rejeitada.
+
+## Teste de Tukey
+
+Em seguida foi usado o Teste de Tukey para comparação das médias entre os grupos
+
+```{r}
+m2_medias <- emmeans(m2, ~ spray)
+plot(m2_medias)
+
+cld(m2_medias, Letters = letters)
+```
+
+Pelo resultado do teste nota-se que existem dois grupos estatisticamente diferentes. Sendo que os inseticidas C, E e D não diferem entre si, mas diferem de A, B e F (que por sua vez não diferem entre si).
+
+Tanto a Análise de Variância quanto o Teste de Tukey foram executados, no entanto, para que essas análises sejam considerados válidos, é necessário conferir se o conjunto de dados atende às premissas de normalidade e de homocedasticidade.
+
+## Teste de normalidade
+
+O teste de normalidade foi executado por meio do Shapiro-test com os resíduos através da função `shapiro.test()`. Também foi usado `qqnorm()` e `qqline()` para visualizar a normalidade por meio de gráfico.
+
+```{r}
+hist(m2$residuals)
+shapiro.test(m2$residuals)
+
+qqnorm(m2$residuals)
+qqline(m2$residuals)
+```
+
+O Shapiro-test forneceu um p-valor inferior ao nível de significância, rejeitando a hipótese nula de que o dado segue uma distribuição normal, ou seja, os dados não apresentam normalidade.
+
+O gráfico criado também demonstra desvios em relação à reta, o que indica a não normalidade.
+
+## Teste de variância
+
+O teste de variância foi executado com a função `bartlett.test()`.
+
+```{r}
+bartlett.test(count ~ spray, data = inseticida)
+#Rejeitamos a homogeneicidade entre as variâncias
+```
+
+Observa-se que o p-valor é inferior a 5%, rejeitando a hipótese nula de que as variâncias são homogêneas.
+
+Usando as funções `check_normality()` e `check_heteroscedasticity()`, observa-se os mesmos resultados.
+
+```{r}
+check_normality(m2)
+check_heteroscedasticity(m2)
+```
+
+A função `simulateResiduals()` também indica a falta de homocedasticidade dos dados, embora não indique a falta de normalidade.
+
+```{r}
+plot(simulateResiduals(m2))
+```
+
+Não atendendo as duas premissas, esse conjunto de dados precisa ser manipulado para que as premissas sejam atendidas e o resultado de sua análise seja válido.
+
+## Alternativa 1 - Transformação de dados
+
+Uma medida que pode ser adotada para que os dados atendam as premissas é a transformação dos dados.
+
+Os dados podem ser transformados de diversas formas, mas os principais são por raiz quadrada, por log(x) e por box-cox.
+
+::: callout-note
+Pode ser usado log(x + 0.5) ao invés de log(x) quando existe um valor igual a 0 nas variáveis respostas.
+:::
+
+### Transformação por raiz quadrada
+
+Uma nova coluna com os valores transformados será criado para o conjunto de dados usando a função `mutate()`.
+
+```{r}
+inseticida <- inseticida |> 
+  mutate(count2 = sqrt(count))
+```
+
+Visualizando os novos dados, é possível notar as alterações.
+
+```{r}
+inseticida |> 
+  ggplot(aes(spray, count2))+
+  geom_boxplot()
+```
+
+Com os dados transformados, será realizado uma nova análise de variância para observar se houve alguma mudança.
+
+```{r}
+m3 <- lm(count2 ~ spray,
+         data = inseticida)
+summary(m3)
+anova(m3)
+```
+
+A análise continua rejeitando a hipótese nula. Em seguida foi comparado as médias entre os grupos.
+
+```{r}
+m3_medias <- emmeans(m3, ~ spray)
+plot(m3_medias)
+
+cld(m3_medias, Letters = letters) #Os dados transformados discriminou melhor, separou mais
+```
+
+Observa-se que dessa vez foram criados 3 grupos estatisticamente distintos, o que significa que os dados transformados discriminou melhor os grupos.
+
+Outra forma de observar a comparação das médias entre grupos é pela função `pwpm()`, que permite a comparação entre cada grupo, um por um. A função `pwpp()` mostra a comparação entre grupos através de um gráfico. A função `pairs()` compara os grupos par por par.
+
+```{r}
+pwpm(m3_medias)
+pwpp(m3_medias)
+pairs(m3_medias)
+```
+
+As premissas são conferidas novamente para observar se houve mudança com a transformação dos dados.
+
+```{r}
+hist(m3$residuals)
+
+qqnorm(m3$residuals)
+qqline(m3$residuals)
+
+shapiro.test(m3$residuals)
+
+bartlett.test(count2 ~ spray,
+              data = inseticida)
+
+check_normality(m3)
+check_heteroscedasticity(m3)
+
+plot(simulateResiduals(m3))
+```
+
+As duas premissas foram atendidas, dando validade à análise de variância realizada.
+
+### Transformação por Box-cox
+
+Outra forma de transformar os dados é através do Box-cox. Para essa transformação, é preciso encontrar o valor de lambda ($\lambda$), extraído a partir da função `boxcox()` do pacote `MASS`. Essa função calcula a verossimilhança perfilhada do parâmetro $\lambda$. Devemos escolher o valor que maximiza esta função.
+
+```{r}
+library(MASS)
+b <- boxcox(lm(inseticida$count+0.1 ~ 1))
+lambda <- b$x[which.max(b$y)]
+lambda
+```
+
+Encontrado o valor de $\lambda$, uma nova coluna será adicionada ao conjunto de dados com os novos dados transformados.
+
+```{r}
+inseticida$count3 <- (inseticida$count ^ lambda - 1)/ lambda
+inseticida$count3
+```
+
+Depois de transformados, devem ser realizados os mesmos passos da análise de variância com os novos dados.
+
+## Alternativa 2 - Não paramétrico
+
+Outra alternativa para se trabalhar com dados que não atendem as premissas é realizando um teste não-paramétrico. Dessa forma é analisado os dados originais, sem passar por transformação.
+
+A alternativa não-paramétrica para a ANOVA é o teste de **Kruscal-Wallis**. O teste de Kruscal-Wallis é o teste não paramétrico utilizado na comparação de três ou mais amostras independentes. Ele nos indica se há diferença entre pelo menos dois deles. A aplicação do teste utiliza os valores numéricos transformados em postos (rankings) e agrupados num só conjunto de dados. A comparação dos grupos é realizada por meio da média dos postos (posto médio).
+
+Para executar esse teste, é necessário utiliza a função `kruskal.test()` do pacote `agricolae`.
+
+```{r}
+library(agricolae)
+kruskal.test(count ~ spray,
+             data = inseticida)
+```
+
+Observa-se que o p-valor foi inferior ao nível de significância, rejeitando a hipótese nula de que os grupos são iguais.
+
+A comparação da média entre os grupos também pode ser realizado usando a função `kruskal()` e o argumento `group = TRUE`.
+
+```{r}
+m4 <- kruskal(inseticida$count, 
+              inseticida$spray, 
+              group = TRUE)
+m4
+```
+
+Nota-se que os grupos formados são o mesmo da alternativa 1.
+
+## Alternativa 3 - GLMs
+
+Os **modelos lineares generalizados (GLMs)** são uma ampliação dos modelos lineares ordinários. Os GLM's são usados quando os resíduos (erro) do modelo apresentam distribuição diferente da normal (gaussiana).
+
+No GLMs, deve-se especificar a distribuição de frequência que deseja utilizar para modelar a variável resposta. Esta distribuição de frequência deve pertencer à família exponencial, que inclui a distribuição de Poisson, Gaussiana, Binomial, Binomial negativa, Gamma, Bernoulli e Beta.
+
+Se Y é uma variável contínua, a sua distribuição de probabilidade deve ser normal. Nesses casos as distribuições recomendadas são a **Gaussiana (Normal)** ou **Gamma**. Se Y é uma variável de proporção que varia continuamente entre 0 e 1 ou 0 e 100, mas não inclui 0 nem 1, a distribuição recomendada é a **Beta**.
+
+Se Y é binário (e.g., vivo ou morto), a distribuição de probabilidade deve ser **Binomial**. Se Y é uma contagem (e.g., abundância ou riqueza de espécies), então a distribuição de probabilidade deve ser **Poisson** ou **Binomial Negativa**.
+
+No caso do conjunto de dados trabalhado, a variável Y representa uma contagem, o que permite utilizar a família Poisson. Para executar o ajuste do modelo, é utilizado a função `glm()` com o argumento `family = poisson`.
+
+Tendo o modelo ajustado, são repetidos os mesmos passos de uma análise de variância normal. A única diferença é que ao invés de usar a função `anova()`, recomenda-se usar a função `Anova()` do pacote `car`, pois ele fornece diretamente o p-valor.
+
+```{r}
+m5 <- glm(count ~ spray,
+          family = poisson,
+          data = inseticida)
+summary(m5)
+anova(m5)
+
+library(car)
+Anova(m5)
+```
+
+Observa-se que o p-valor foi inferior ao nível de significância, rejeitando a hipótese nula de que os grupos são iguais.
+
+As premissas podem ser conferidas através da função `simulateResiduals()`.
+
+```{r}
+plot(simulateResiduals(m5))
+```
+
+Embora a normalidade não foi atendida, a premissa da homocedasticidade tem maior peso.
+
+O teste de comparação das médias foi executado através do `emmeans()` e `cld()`.
+
+```{r}
+m5_medias <- emmeans(m5, ~ spray,
+                     type = "response")
+m5_medias
+cld(m5_medias)
+```
+
+As 3 alternativas deram o mesmo resultado, mas o GLMs é o mais utilizado pelo fato dele não precisar transformar os dados de maneira nenhuma e permitir o uso da ANOVA.
+
+# ANOVA Fatorial
+
+Quando o conjunto de dados apresenta dois fatores, a análise realizada é a ANOVA fatorial.
+
+Na ANOVA fatorial ou Two-Way ANOVA, são formulados 6 hipóteses, sendo 3 hipóteses nulas e 3 hipóteses alternativas:
+
+-   **Hipótese nula 1 (Ho1)**: não há diferença entre os grupos em função do fator A.
+-   **Hipótese alternativa 1 (Ha1)**: há pelo menos uma diferença entre os grupos em função do fator A.
+-   **Hipótese nula 2 (Ho2)**: não há diferença entre os grupos em função do fator B.
+-   **Hipótese alternativa 2 (Ha2)**: há pelo menos uma diferença entre os grupos em função do fator B.
+-   **Hipótese nula 3 (Ho3)**: não há interação entre fator A e fator B. O efeito do fator A nas médias dos grupos é o mesmo para todos os níveis do fator B.
+-   **Hipótese alternativa 3 (Ha3)**: existe uma interação entre fator A e B. O efeito do fator A nas médias dos grupos depende dos níveis do fator B.
+
+## Importação dos dados
+
+Os dados foram importados do Google Sheets pela função `gsheet2tbl()` do pacote `gsheet`. O conjunto de dados avalia a severidade de uma doença em função de dois fatores: o tipo de tratamento aplicado e as doses do tratamento.
+
+```{r}
+li <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit#gid=2023059672")
+li
+```
+
+## Visualização dos dados
+
+Como o número de repetições é baixo, o conjunto de dados será visualizado com um gráfico de pontos usando a função `ggplot()` juntamente a `geom_jitter()`. A função `facet_wrap()` foi usada para dividir os dados em função do tratamento aplicado.
+
+```{r}
+library(ggthemes)
+li |> 
+  ggplot(aes(factor(dose), severity, color = factor(dose)))+
+  geom_jitter(width = 0.1)+
+  facet_wrap(~treat)+
+  theme_bw()
+```
+
+## Modelo fatorial (2-way ANOVA)
+
+A função utilizada para o ajuste do modelo linear é a mesma: `lm()`. No entanto, como se trata de dois fatores envolvidos (treat e dose), a fórmula usada é `severity ~ treat*factor(dose)`. O grupo *dose* foi especificado como um fator para que ele não fosse considerado como uma variável numérica.
+
+```{r}
+mf <- lm(severity ~ treat*factor(dose),
+         data = li)
+mf
+```
+
+Com o modelo linear ajustado, foi feito a ANOVA usando a função `anova()`.
+
+```{r}
+anova(mf)
+```
+
+Em relação ao fator tratamento, observa-se que o p-valor foi inferior ao nível de significância (5%), rejeitando a hipótese nula de que os grupos são iguais em função do tratamento aplicado.
+
+Também nota-se que em relação ao fator dose, o p-valor foi inferior ao nível de significância (5%), rejeitando a hipótese nula de que os grupos são iguais em função das doses aplicadas.
+
+Por último também foi visto que a interação entre os fatores "tratamento" e "dose" foi significativo, indicando que a interação entre esses dois fatores interferem nas diferenças estatísticas entre os grupos.
+
+## Teste das premissas
+
+As premissas foram checadas através das funções `simulateResiduals()`, `check_normality()` e `check_heteroscedasticity()`.
+
+```{r}
+plot(simulateResiduals(mf))
+check_normality(mf)
+check_heteroscedasticity(mf)
+```
+
+As funções do pacote `performance` apresentaram problemas em relação à normalidade e homocedasticidade, no entanto, a função `simulateResiduals()` não demonstrou problema nas premissas.
+
+## Teste de comparação das médias
+
+Em seguida, foi feito a comparação entre as médias dos grupos usando as funções `emmeans()` e `cld()`.
+
+Por se tratar de dois fatores, foi comparado as médias entre os grupos em função de cada fator, usando as fórmulas `~ treat|dose` para comparar as médias dos tratamentos em função das doses e `~ dose|treat` para comparar as médias das doses em função dos tratamentos.
+
+```{r}
+mf_medias <- emmeans(mf, ~ treat|dose)
+mf_medias
+cld(mf_medias, Letters = letters)
+plot(cld(mf_medias))
+
+mf_medias2 <- emmeans(mf, ~dose|treat)
+cld(mf_medias2, Letters = letters)
+plot(cld(mf_medias2))
+```
+
+::: callout-note
+Na montagem de uma tabela de comparação das médias entre os grupos, as letras maiúsculas são usadas para comparar as mesmas colunas, enquanto que as letras minúsculas são usadas para comparar as mesmas linhas
+:::

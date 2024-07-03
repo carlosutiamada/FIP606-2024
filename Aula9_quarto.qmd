@@ -1,0 +1,446 @@
+---
+title: "Regressão"
+format: html
+message: false
+warning: false
+---
+
+# Pacotes
+
+```{r}
+library(tidyverse)
+library(lme4)
+library(car)
+```
+
+# Regressão linear
+
+A regressão é uma técnica estatística utilizada para modelar e analisar a relação entre uma variável dependente (ou resposta) e uma ou mais variáveis independentes (ou preditoras). O objetivo principal da regressão é entender como a variável dependente varia quando as variáveis independentes mudam e usar essa compreensão para fazer previsões.
+
+## Importação dos dados
+
+O conjunto de dados foi importado a partir do Google Sheet através da função `gsheet2tbl()` do pacote `gsheet`. 
+
+Esse conjunto de dados é composto pelo *trat*, que é o percentual de sementes inoculados com patógenos e *nplants*, que é o número de plantas emergidas no campo. Estima-se que o aumento da concentração de inóculo irá diminuir a estande de plantas no cmapo. O fator de concentração de inóculo é um fator numérico contínuo.
+
+```{r}
+library(gsheet)
+estande <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit#gid=401662555")
+```
+
+## Visualização dos dados
+
+Foram criados gráficos de pontos com intervalos de confiança. Os gráficos foram criados usando as funções `ggplot()`, `geom_jitter()` e `stat_summary` (para criar os pontos médios e intervalos de confiança). 
+
+Também foi usada a função `geom_smooth()` com o argumento `method = "lm"` para criar uma linha de tendência no gráfico ajustado ao modelo linear, mostrando a tendência que os dados possuem de aumentar ou diminuir em função do eixo X.
+
+```{r}
+estande |> 
+  ggplot(aes(trat, nplants))+
+  geom_jitter(width = 0.1, color = "gray")+
+  facet_wrap(~exp)+
+  stat_summary(fun.data = "mean_cl_boot", color = "blue")+
+  geom_smooth(method = "lm", se = F)
+
+estande |> 
+  ggplot(aes(trat, nplants, color = factor(exp)))+
+  geom_jitter(width = 0.1, color = "gray")+
+  stat_summary(fun.data = "mean_cl_boot", color = "blue")+
+  geom_smooth(method = "lm", se = F)
+```
+
+## Regressão linear do experimento 1
+
+Inicialmente foi filtrado apenas o experimento 1 do conjunto de dados usando a função `filter()`.
+
+```{r}
+exp1 <- estande |> 
+  filter(exp == 1)
+```
+
+Depois foi plotado um gráfico do experimento 1 usando as funções `ggplot()`, `geom_point()` e `geom_smooth()` (dessa vez sem nenhum ajuste de modelo).
+
+```{r}
+exp1 |> 
+  ggplot(aes(trat, nplants))+
+  geom_point()+
+  ylim(0,100)+
+  geom_smooth(se = F)
+```
+
+Pode-se observar pelo gráfico que a linha de tendência se assemelha a uma reta (modelo linear).
+
+Para ajustar os dados em um modelo linear, foi usada a função `lm()`.
+
+```{r}
+lm1 <- lm(nplants ~ trat,
+          data = exp1)
+summary(lm1)
+```
+
+A partir da função `summary()`, é possível inferir que a taxa de redução da variável resposta em função do eixo X é de -0.24, ou seja, para cada unidade de X reduz o Y em -0.24.
+
+Além disso, o p-valor é informado, sendo igual a 0.2066, ou seja, é superior ao nível de significância e não se pode rejeitar a hipótese nula (Ho: a taxa de redução é igual a 0).
+
+Outra alternativa para realizar a regressão linear é usando a função `glm()` e o argumento `family = "gaussian"`.
+
+```{r}
+glm1 <- glm(nplants ~ trat,
+            family = "gaussian",
+            data = exp1)
+summary(glm1)
+```
+
+A família gaussiana envolve o mesmo método do "lm", resultando na mesma taxa de redução.
+
+## Regressão linear do experimento 2
+
+Inicialmente foi filtrado apenas o experimento 2 do conjunto de dados usando a função `filter()`.
+
+```{r}
+exp2 <- estande |> 
+  filter (exp == 2)
+```
+
+O mesmo gráfico foi montado para o experimento 2.
+
+```{r}
+exp2 |> 
+  ggplot(aes(trat, nplants))+
+  geom_point()+
+  ylim(0,100)+
+  geom_smooth(method = lm, se = F)
+```
+
+Pelo gráfico é possível observar uma diminuição dos valores de Y em função do eixo X.
+
+```{r}
+lm2 <- lm(nplants ~ trat,
+          data = exp2)
+summary(lm2)
+```
+
+O resultado do modelo linear indica que a taxa de redução desses dados é de -0.70, ou seja, para cada unidade de X reduz o Y em -0.70.
+
+Nesse experimento nota-se que o p-valor foi inferior ao nível de significância, indicando que a hipótese nula de que a taxa de redução é igual a 0 é rejeitada, ou seja, há uma regressão.
+
+Ajustando o modelo pelo método do GLM, pode ser utilizado duas famílias: `family = "gaussian"` e `family = "log"`.
+
+```{r}
+glm2 <- glm(nplants ~ trat,
+            family = "gaussian",
+            data = exp2)
+summary(glm2)
+AIC(glm2)
+
+glm2b <- glm(nplants ~ trat,
+             family = poisson(link = "log"),
+             data = exp2)
+summary(glm2b)
+AIC(glm2b)
+```
+
+A função `AIC()` compara os dois métodos (famílias diferentes) e fornece qual deles melhor representa o conjunto de dados. Sempre o menor valor é o mais recomendado. Nesse caso, usando a família gaussiana, o valor de AIC foi menor, sendo o modelo que melhor representa os dados.
+
+## Regressão linear do experimento 3
+
+Inicialmente foi filtrado apenas o experimento 3 do conjunto de dados usando a função `filter()`.
+
+```{r}
+exp3 <- estande |> 
+  filter (exp == 3)
+```
+
+O mesmo gráfico foi montado para o experimento 3.
+
+```{r}
+exp3 |> 
+  ggplot(aes(trat, nplants))+
+  geom_point()+
+  ylim(0,100)+
+  geom_smooth(method = lm, se = F)
+```
+
+Pelo gráfico é possível observar uma diminuição dos valores de Y em função do eixo X.
+
+```{r}
+lm3 <- lm(nplants ~ trat,
+          data = exp3)
+summary(lm3)
+```
+
+O resultado do modelo linear indica que a taxa de redução desses dados é de -0.76, ou seja, para cada unidade de X reduz o Y em -0.76.
+
+Nesse experimento nota-se que o p-valor foi inferior ao nível de significância, indicando que a hipótese nula de que a taxa de redução é igual a 0 é rejeitada, ou seja, há uma regressão.
+
+O coeficiente de determinação (adjusted R-squared) fornecido é igual a 59%, o que indica que 59% da variabilidade do Y (número de plantas) é explicado pelo X (inóculo), sendo o máximo desse coeficiente igual a 1.
+
+```{r}
+glm3 <- glm(nplants ~ trat,
+            family = "gaussian",
+            data = exp3)
+summary(glm3)
+AIC(glm3)
+
+glm3b <- glm(nplants ~ trat,
+             family = poisson(link = "log"),
+             data = exp3)
+summary(glm3b)
+AIC(glm3b) #melhor qualidade de ajuste, quanto menor é melhor (mais ajustado)
+```
+
+Para esse conjunto de dados, a família log resultou em um menor valor de AIC, o que indica que esse modelo melhor representa os dados que a família gaussiana.
+
+Transformando o log dos tratamentos, os dados ficam mais linearizados (diminui a curva).
+
+```{r}
+exp3 |> 
+  ggplot(aes(log(trat), nplants))+
+  geom_point()+
+  ylim(0,100)+
+  geom_smooth(se = F)
+```
+
+## Regressão linear geral
+
+Pegandos os dados inteiros, foi realizado o ajuste do modelo usando o GLM tanto com a família gaussianda quanto por log e depois foi comparado os dois modelos com o AIC.
+
+```{r}
+library(lme4)
+glm4 <- glmer(nplants ~ trat + (trat|exp),
+            family = "gaussian",
+            data = estande)
+summary(glm4)
+AIC(glm4)
+
+glm4b <- glmer(nplants ~ trat + (trat|exp),   #(trat|exp) é o efeito aleatório
+             family = poisson(link = "log"),
+             data = estande)
+summary(glm4b)
+AIC(glm4b)
+```
+
+Usando a família gaussianda, nota-se que o AIC obtido foi menor, indicando que, no geral, esse modelo é o que melhor representa o conjunto de dados.
+
+# Regressão linear - conjunto de dados 2
+
+Para uma nova regressão linear, um novo conjunto de dados foi importado a partir do pacote `r4pde`. O conjunto de dados é denominado de WhiteMoldSoybean.
+
+A regressão linear será usada para prever a produtividade da soja em função da incidência do mofo branco.
+
+```{r}
+library(r4pde)
+
+wm <- WhiteMoldSoybean
+```
+
+## Visualização dos dados
+
+```{r}
+wm |> 
+  ggplot(aes(inc, yld, group = factor(study)))+
+  geom_point()+
+  facet_wrap(~ study)+
+  geom_smooth(method = "lm", se = F)+
+  theme_minimal()
+```
+
+## Regressão linear
+
+```{r}
+mofo1 <- lm(yld ~ inc,
+            data = wm)
+summary(mofo1)
+```
+
+Ajustando o conjunto de dados ao modelo linear, foi obtido uma taxa de redução de -9.261.
+
+```{r}
+library(broom)
+mofo2 <- wm |> 
+  group_by(study) |> 
+  do(tidy(lm(.$yld ~ .$inc), conf.int = TRUE))
+
+df<- mofo2 |> 
+  filter(term == ".$inc")
+mean(df$estimate)
+
+#Histograma da produtividade quando incidência é 0
+p1 <- mofo2 |> 
+  filter(term == "(Intercept)") |> 
+           ggplot(aes(x = estimate))+
+           geom_histogram(bins = 8, color = "white", fill = "gray")+
+           theme_r4pde()+
+           labs(x = "Intercept", y = "frequency")
+p2 <- mofo2 |> 
+  filter(term == ".$inc") |> 
+           ggplot(aes(x = estimate))+
+           geom_histogram(bins = 8, color = "white", fill = "gray")+
+           theme_r4pde()+
+           labs(x = "Slopes", y = "frequency")
+library(patchwork)
+p1+p2
+```
+
+Um outro ajuste de modelo foi utilizado para o conjunto de dados, considerando desa vez um efeito aleatório de incidência por estudos.
+
+```{r}
+library(lme4)
+mofo3 <- lmer(yld ~ inc + (inc|study), data = wm, REML = F)
+summary(mofo3)
+```
+Esta estimativa de taxa de redução de -17 é muito mais confiável, uma vez que os outros métodos subestimam os valores.
+
+A incidência está causando uma redução na produtividade de -17kg (à medida que a incidência aumenta, a produtividade diminui em 17kg)
+
+```{r}
+Anova(mofo3)
+confint(mofo3, method = "Wald")
+```
+
+# Regressão quadrática
+
+A regressão quadrática é usada em modelos quadráticos, ou seja, modelos de segundo grau. Ao invés de regressões lineares, esses modelos formam regressões curvi-lineares.
+
+```{r}
+estande <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit#gid=401662555")
+```
+
+A partir do gráfico importado, foi filtrado apenas o experimento 2 para realizar a regressão quadrática.
+
+```{r}
+exp2 <- estande |> 
+  filter (exp == 2)
+```
+
+## Visualização dos dados
+
+O gráfico montado apresenta tanto a linha de tendência ajustada no modelo linear quanto a linha de tendência ajustada no modelo quadrático, usando a função `geom_smooth()` e o argumento `formula = y ~poly(x,2)`.
+
+```{r}
+exp2 |> 
+  ggplot(aes(trat, nplants))+
+  geom_point()+
+  ylim(0,100)+
+  geom_smooth(method = lm, se = FALSE,
+              formula = y ~poly(x,2))+ #Modelo quadrático
+  geom_smooth(method = lm, se = F, color = "red") #Modelo linear
+```
+
+## Regressão
+
+Para comparar qual é o melhor ajuste de modelo que representa o conjunto de dados, foi realizado o modelo de primeira ordem e de segunda ordem e depois eles foram comparados usando a função `AIC()`.
+
+```{r}
+exp2$trat2 <- exp2$trat^2 #Foi elevado ao quadrado para realizar o modelo quadrático, adicionar um coeficiente
+
+
+#Primeira ordem
+lm2 <- lm(nplants ~ trat,
+          data = exp2)
+summary(lm2)
+
+#Segunda ordem ou quadrático
+lm3 <- lm(nplants ~ trat + trat2,
+          data = exp2)
+summary(lm3) #R deu 0.49 --> explica melhor a variação dos dados se comparado ao de primeira ordem
+
+AIC(lm2)
+AIC(lm3)
+```
+
+Pelo valor do AIC, observa-se que o modelo quadrático melhor representa o conjunto de dados.
+
+Para formular a função do modelo quadrático, é preciso observar os valores informados no `summary()`
+
+```{r}
+summary(lm3)
+```
+
+A função do modelo quadrático é y = 66,3 - 1,77xtrat + 0,02xtrat^2
+
+## Usando o pacote AgroR
+
+Através do pacote `AgroR`, é possível criar os modelos de maneira mais fácil usando a função `polynomial()` e especificando o grau do modelo.
+
+```{r}
+library(AgroR)
+
+with(exp2, polynomial(trat, nplants, grau = 1))
+
+with(exp2, polynomial(trat, nplants, grau = 2))
+
+with(exp2, polynomial(trat, nplants, grau = 3))
+```
+
+Normalmente não se utiliza o modelo de grau 3, pois não dá para explicar biologicamente a razão do dado estar aumentando e diminuindo.
+
+# Regressão não-linear
+
+Quando não é possível ajustar o conjunto de dados em um modelo linear ou quadrático, tem-se a regressão não-linear.
+
+```{r}
+pyra <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit#gid=465348652")
+```
+
+O conjunto de dados importado acima tem duas replicatas para cada nível de fator, para que facilite a sua análise, será agrupado as replicatas em um único dado, pegando a média deles.
+
+```{r}
+pyra2 <- pyra |> 
+  group_by(code, state, dose) |> 
+  summarise(mean_germination = mean(germination))
+``` 
+
+## Visualização dos dados
+
+```{r}
+pyra2 |> 
+  ggplot(aes(dose, mean_germination))+
+  geom_point()+
+  geom_smooth(span = 3, se = FALSE)+
+  facet_wrap(~code)
+```
+
+Nota-se que o conjunto de dados não segue o modelo linear e nem o modelo quadrático.
+
+## Calculando EC50 (redução da germinação em 50%)
+
+Como o conjunto de dados envolve a aplicação de produto em diferentes doses para o controle de germinação do fungo, é possível calcular o EC50, ou seja, a dose em que a redução da germinação é de 50%. Para isso foi usado o pacote `drc` e a função `ED()`. Todavia, antes de se calcular a EC50, é preciso ajustar o conjunto de dados em um modelo não-linear, usando a função `drm()` e o argumento `fct = LL.3()` (log-logistic de 3 parâmetros).
+
+```{r}
+library(drc)
+
+isolado165 <- pyra2 |> 
+  filter(code == "165")
+
+drc1 <- drm(mean_germination ~ dose, data = isolado165,
+            fct = LL.3())
+AIC(drc1) 
+plot(drc1) #Para visualizar se o ajuste está bom
+ED(drc1, 50, interval = "delta") #O interval = delta fornece o intervalo de confiança
+```
+
+Para o isolado 165, estima-se o EC50 no valor de dose 0.55
+
+É possível estimar o EC50 de mais de um isolado ao mesmo tempo usando o pacote `ec50estimator` e a função `estimate_EC50()`. Novamente foi usado o argumento `fct = drc::LL.3()`.
+
+```{r}
+library(ec50estimator)
+
+df_ec50 <- estimate_EC50(mean_germination ~ dose,
+                         data = pyra2,
+                         isolate_col = "code",
+                         interval = "delta",
+                         fct = drc::LL.3())
+df_ec50
+```
+
+Pode-se também criar um gráfico que permite visualizar quais isolados são mais sensíveis e quais são menos sensíveis ao produto.
+
+```{r}
+df_ec50 |> 
+  ggplot(aes(reorder(ID, Estimate), Estimate))+
+  geom_point()+
+  geom_errorbar(aes(ymin = Lower, ymax = Upper))+
+  coord_flip()
+```

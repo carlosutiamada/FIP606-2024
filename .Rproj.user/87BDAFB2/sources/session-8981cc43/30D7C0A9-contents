@@ -1,0 +1,453 @@
+---
+title: "ANOVA em blocos casualizados e parcela subdividida"
+format: html
+message: false
+warning: false
+---
+
+# ANOVA em blocos casualizados
+
+O delineamento em blocos casualizado (DBC) envolve os três princípios da experimentação: repetição, casualização e controle local. Neste caso, as condições locais não são homogêneas e podem ter efeito significativo sobre os tratamentos, sendo necessário o uso de blocos para controlar uma variação conhecida do ambiente.
+
+Assim, a ANOVA contará com três fontes de variação: duas fontes de variação conhecidas (tratamento e bloco), e uma fonte de variação desconhecida (resíduo).
+
+Vale destacar que no DBC não há interesse pela interação do bloco com o tratamento, sendo o bloco apenas para controlar uma possível variação sobre os tratamentos induzida por uma possível variação do ambiente.
+
+## Importação dos dados
+
+O conjunto de dados foi importado do Google Sheet através da função `gsheet2tbl()` do pacote `gsheet`.
+
+Os dados importados contam com três variáveis respostas: DFC, Ferrugem e Produtividade. Foram experimentados 8 tratamentos, com 4 blocos.
+
+```{r}
+library(tidyverse)
+library(gsheet)
+
+soja <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit#gid=866852711")
+```
+
+Para cada variável resposta será feito uma ANOVA. Mas primeiro é necessário considerar o número dos tratamentos e os números dos blocos como fatores. Isso pode ser feito usando a função `mutate()`.
+
+```{r}
+soja <- soja |> 
+  mutate(TRAT = as.factor(TRAT),
+         BLOCO = as.factor(BLOCO))
+```
+
+## Visualização dos dados
+
+Para cada variável resposta foi criado um gráfico de pontos com a média e o intervalo de confiança de cada tratamento. O gráfico foi feito usando as funções `ggplot()`, `geom_jitter()` e `stat_summary()`, com o argumento `fun.data = "mean_cl_boot"` (esse argumento cria a bola representando a média e as linhas representando o intervalo de confiança)
+
+Depois, os 3 gráficos foram colocados juntos através do pacote `patchwork`.
+
+```{r}
+dfc <- soja |> 
+  ggplot(aes(TRAT, DFC))+
+  geom_jitter(width = 0.1, color = "gray70")+
+  stat_summary(fun.data = "mean_cl_boot", color = "black")
+dfc
+
+fer <- soja |> 
+  ggplot(aes(TRAT, FER))+
+  geom_jitter(width = 0.1, color = "gray70")+
+  stat_summary(fun.data = "mean_cl_boot", color = "blue")
+fer
+
+prod <- soja |> 
+  ggplot(aes(TRAT, PROD))+
+  geom_jitter(width = 0.1, color = "gray70")+
+  stat_summary(fun.data = "mean_cl_boot", color = "red")
+prod
+
+library(patchwork)
+dfc / fer / prod
+```
+
+## ANOVA DFC
+
+Como não há interesse da interação entre o bloco e o tratamento, é preciso ajustar o modelo linear de modo que o bloco seja considerado como efeito fixo. Isso pode ser feito usando a função `lm()` juntamente com a fórmula `DFC ~ TRAT+BLOCO` (o "+" garante que o BLOCO seja visto como efeito fixo)
+
+```{r}
+aov_dfc <- lm(DFC ~ TRAT+BLOCO,
+              data = soja)
+```
+
+Com o modelo ajustado, é executado a ANOVA usando a função `anova()`.
+
+```{r}
+anova(aov_dfc)
+```
+
+Pelo resultado da ANOVA, pode-se observar que o efeito dos tratamentos na váriavel DFC é significativo, enquanto que o efeito dos blocos não é significativo.
+
+### Teste das premissas
+
+As premissas foram checadas através das funções `check_heteroscedasticity()` e `check_normality()`
+
+```{r}
+library(performance)
+check_heteroscedasticity(aov_dfc)
+check_normality(aov_dfc)
+```
+
+Ambas as premissas foram atendidas
+
+### Comparação das médias entre os grupos
+
+A comparação das médias entre os grupos foi realizada com as funções `emmeans()` e `cld`.
+
+```{r}
+library(emmeans)
+medias_dfc <- emmeans(aov_dfc, ~ TRAT)
+
+library(multcomp)
+library(multcompView)
+cld(medias_dfc, Letters = letters)
+```
+
+Observa-se a formação de 4 grupos estatisticamente distintos.
+
+A eficácia no controle do DFC pode ser calculado através da seguinte fórmula: Eficácia no controle (%) = (1- (emmean do tratamento/emmean da testemunha))\*100
+
+## ANOVA FER
+
+```{r}
+aov_fer <- lm(FER ~ TRAT+BLOCO,
+              data = soja)
+anova(aov_fer)
+```
+
+### Teste das premissas
+
+```{r}
+check_heteroscedasticity(aov_fer)
+check_normality(aov_fer)
+```
+
+Ambas as premissas não foram atendidas.
+
+### Transformação dos dados por Boxcox
+
+```{r}
+b <- boxcox(lm(soja$FER ~ 1))
+lambda <- b$x[which.max(b$y)]
+lambda
+soja$FER3 <- (soja$FER ^ lambda - 1)/ lambda
+```
+
+### Nova ANOVA com os dados transformados
+
+```{r}
+aov_fer3 <- lm(FER3 ~ TRAT+BLOCO,
+              data = soja)
+anova(aov_fer3)
+```
+
+Com os dados transformados, nota-se que o efeito dos blocos também é significante para variável resposta da ferrugem.
+
+### Nova checagem das premissas
+
+```{r}
+check_normality(aov_fer3)
+check_heteroscedasticity(aov_fer3)
+```
+
+### Comparação das médias entre os grupos
+
+```{r}
+medias_fer2 <- emmeans(aov_fer3, ~ TRAT)
+medias_fer2
+pwpm(medias_fer2)
+
+cld(medias_fer2, Letters = letters)
+```
+
+Observa-se a formação de 3 grupos estatisticamente distintos.
+
+## ANOVA PROD
+
+```{r}
+aov_prod <- lm(PROD ~ TRAT+BLOCO,
+              data = soja)
+anova(aov_prod)
+```
+
+### Teste das premissas
+
+```{r}
+check_heteroscedasticity(aov_prod)
+check_normality(aov_prod)
+```
+
+Ambas as premissas foram atendidas
+
+### Comparação das médias entre os grupos
+
+```{r}
+medias_prod <- emmeans(aov_prod, ~ TRAT)
+medias_prod
+pwpm(medias_prod)
+cld(medias_prod, Letters = letters)
+```
+
+Observa-se a formação de 2 grupos estatisticamente distintos.
+
+A diferença de produtividade pode ser calculada pela seguinte fórmula: Diferença de produtividade = emmean do tratamento - emmean da testemunha
+
+### Outra forma de visualizar os valores da produtividade
+
+```{r}
+medias_prod_grupo <- cld(medias_prod, Letters = letters)
+df_prod <- data.frame(medias_prod_grupo)
+df_prod |> 
+  ggplot(aes(TRAT, emmean))+
+  geom_point()+
+  ylim(3000,6500)+
+  geom_errorbar(aes(min = lower.CL,
+                    max = upper.CL),
+                width = 0.1)+
+  annotate(geom = "text", x = 1.2, y = 4200, label = "A")+
+  annotate(geom = "text", x = 2.3, y = 5000, label = "AB")
+```
+
+### Exportando a tabela de comparação das médias entre os grupos
+
+Usando a função `write_xlsx()` do pacote `writexl`, é possível exportar a tabela de comparação das médias entre os grupos para um arquivo Excel.
+
+```{r}
+knitr::kable(df_prod |> dplyr::select(TRAT, emmean, .group))
+library(writexl)
+write_xlsx(df_prod, "df.xlsx")
+```
+
+# ANOVA da área abaixo da curva de progresso da doença
+
+A área abaixo da curva de progresso da doença (AACPD) é um parâmetro quantitativo muito utilizado em diversos patossistemas na análise do progresso das doenças em plantas, o seu valor é obtido após uma série de avaliações de severidade ao longo do tempo.
+
+## Importação dos dados
+
+O conjunto de dados foi importado a partir do Google Sheet através da função `gsheet2tbl()` do pacote `gsheet`. Como os dados não estavam no formato de data frame, foi usado a função `as.data.frame()` para realizar a conversão.
+
+O conjunto de dados apresenta a severidade de uma doença em função do dia e do modo de irrigação.
+
+```{r}
+curve <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit#gid=1807247585")
+curve = as.data.frame(curve)
+```
+
+## Visualização dos dados
+
+Por ser um conjunto de dados que possui uma variável numérica em função de um fator temporal, foi construído um gráfico de linhas para exibir o progresso da severidade da doença em função dos dias. Para isso, foi usado as funções `ggplot()` juntamente a `geom_point()` e `geom_line()`.
+
+Também foram feitos gráficos separando os dados em função dos diferentes modos de irrigação utilizados no experimento.
+
+```{r}
+curve |> 
+  group_by(day) |> 
+  summarise(severity_mean = mean(severity),
+            severity_sd = sd(severity)) |> 
+  ggplot(aes(day, severity_mean))+
+  geom_point(width = 0.05)+
+  geom_line()
+
+curve |> 
+  group_by(day, Irrigation) |> 
+  summarise(severity_mean = mean(severity),
+            severity_sd = sd(severity)) |> 
+  ggplot(aes(day, severity_mean, color = Irrigation))+
+  geom_point(width = 0.05)+
+  geom_line()
+
+curve |> 
+  group_by(day, Irrigation) |> 
+  summarise(severity_mean = mean(severity)) |> 
+  ggplot(aes(day, severity_mean))+
+  geom_point(width = 0.05)+
+  geom_line()+
+  facet_grid(~Irrigation)
+```
+
+## AUDPC
+
+Para calcular a AUDPC (o mesmo que AACPD), foi usado o pacote `epifitter` junto com a função `summarise(AUDPC())`.
+
+```{r}
+library(epifitter)
+audpc <- curve |> 
+  group_by(Irrigation, rep) |> 
+  summarise(aacpd = AUDPC(day, severity))
+```
+
+## ANOVA da AUDPC
+
+Tendo os dados da AUDPC, o conjunto de dados foi ajustado para o modelo linear usando a função `lm()` e a fórmula `aacpd ~ Irrigation + factor(rep)`, na qual as repetições foram considerados como efeito fixo.
+
+Posteriormente, foi realizado uma análise de variância.
+
+```{r}
+aov_audpc <- lm(aacpd ~ Irrigation + factor(rep),
+                data = audpc) 
+anova(aov_audpc)
+```
+
+Pelos resultados, percebe-se que tanto o modo de irrigação quanto as repetições tiveram efeitos pouco significativos em relação ao AUDPC.
+
+Usando os dados originais importados, foi também realizado uma ANOVA da severidade da doença em função do modo de irrigação interagindo com o fator dia, com as repetições novamente como efeito fixo.
+
+```{r}
+aov_curve <- lm(severity ~ Irrigation*day + rep,
+         data = curve)
+anova(aov_curve)
+```
+
+Observa-se que o fator dia teve um efeito significativo sobre a severidade da doença, enquanto que os outros componentes não tiveram efeitos sobre a variável.
+
+### Coeficiente de variação
+
+O coeficiente de variação (CV) é um indicador da variabilidade de um conjunto de dados. Ele pode ser encontrado usando a função `cv.model()` do pacote `agricolae`.
+
+```{r}
+library(agricolae)
+cv.model(aov_audpc)
+```
+
+# Parcela subdividida
+
+No delineamento em parcelas subdivididas existem dois tipos de tratamento: o principal e o secundário. As parcelas são subdivididas no espaço, ou no tempo. Depois que os tratamentos principais (parcelas) são sorteados, sorteia-se o tratamento secundário (subparcelas) dentro das parcelas.
+
+Os tratamentos primários são distribuídos às parcelas de acordo com um delineamento especificado (efeito fixo).
+
+Os tratamentos secundários são distribuídos às subparcelas de forma aleatória (efeito aleatório).
+
+Desse modo, em delineamento de parcela subdivida é trabalhado um modelo misto: fator fixo + fator aleatório.
+
+## Importação dos dados
+
+O conjunto de dados foi importado a partir do Google Sheet através da função `gsheet2tbl()` do pacote `gsheet`.
+
+Esses dados representam podridão de Fusarium em milho em parcelas subdivididas. Dentro de cada bloco foi casualizado os híbridos (tratamento primário). O método de aplicação foi casualizado dentro dos híbridos (tratamento secundário).
+
+```{r}
+milho <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit#gid=1345524759")
+```
+
+## Visualização dos dados
+
+Foram criados dois gráficos de pontos com intervalos de confiança, sendo um gráfico sobre o índice e outro sobre a produtividade. Os gráficos foram criados usando as funções `ggplot()`, `geom_jitter()` e `stat_summary` (para criar os pontos médios e intervalos de confiança)
+
+```{r}
+milho |> 
+  ggplot(aes(method, index))+
+  geom_jitter(width = 0.1, color = "black", alpha = 0.2)+
+  facet_grid(~hybrid)+
+  stat_summary(fun.data = "mean_cl_boot", color = "blue")
+
+milho |> 
+  ggplot(aes(method, yield))+
+  geom_jitter(width = 0.1, color = "black", alpha = 0.2)+
+  facet_grid(~hybrid)+
+  stat_summary(fun.data = "mean_cl_boot", color = "red")
+```
+
+## Modelo para parcela subdividida - index
+
+Em relação à variável resposta de índice, o modelo do conjunto de dados foi ajustado para o modelo misto usando a função `lmer()` do pacote `lme4`. Para atribuir os efeitos fixos e aleatórios, foi usado a seguinte fórmula: `index ~ hybrid*method + block + (1|block/hybrid)`, no qual os blocos estão como efeitos fixos e os híbridos como efeitos aleatórios.
+
+```{r}
+library(lme4)
+
+milho <- milho |> 
+  mutate(block = as.factor(block))
+
+mix <- lmer(index ~ hybrid*method + block + (1|block/hybrid), 
+             data = milho)
+```
+
+A análise de variância foi executada com a função `Anova()` do pacote `car`.
+
+```{r}
+library(car)
+Anova(mix)
+```
+
+Pode-se concluir que pelo menos um híbrido é diferente dos demais, assim como existe diferença significativa entre os métodos. A interação entre híbridos e métodos também resultou em uma diferença estatística.
+
+### Teste das premissas
+
+```{r}
+check_normality(mix)
+check_heteroscedasticity(mix)
+
+library(DHARMa)
+plot(simulateResiduals(mix))
+```
+
+A premissa da homocedasticidade não foi atendida, sendo necessário realizar transformação dos dados.
+
+### Transformação com raiz quadrada
+
+```{r}
+mix2 <- lmer(sqrt(index) ~ hybrid*method + block + (1|block/hybrid), 
+             data = milho)
+Anova(mix2)
+check_normality(mix2)
+check_heteroscedasticity(mix2)
+plot(simulateResiduals(mix2))
+
+qqnorm(residuals(mix2))
+qqline(residuals(mix2))
+hist(residuals(mix2))
+```
+
+Dessa vez as premissas foram atendidas.
+
+### Comparação das médias entre os grupos
+
+O teste de comparação das médias entre os grupos foi realizado com as funções `emmeans()` e `cld()`.
+
+Como a interação entre híbridos e métodos deu um valor significativo, o teste de comparação das médias foi tanta sobre os híbridos em função dos métodos, quando dos métodos em função dos híbridos.
+
+```{r}
+medias_milho <- emmeans(mix2,
+                        ~hybrid|method,
+                        type = "response") #Qaundo transforma dados, precisa colocar type = response
+medias_milho2 <- emmeans(mix2,
+                         ~method|hybrid,
+                         type = "response")
+
+cld(medias_milho, Letters = LETTERS)
+cld(medias_milho2, Letters = letters)
+```
+
+## Modelo para parcela subdividida - yield
+
+Os mesmos processos foram repetidos para a variável resposta produtividade.
+
+```{r}
+mix3 <- lmer(sqrt(yield) ~ hybrid*method + block + (1|block/hybrid), 
+             data = milho)
+Anova(mix3)
+```
+
+Pelo menos um híbrido é diferente dos demais, assim como existe diferença significativa na interação híbrido com método
+
+### Teste das premissas
+
+```{r}
+check_normality(mix3)
+check_heteroscedasticity(mix3)
+```
+
+As premissas foram atendidas.
+
+### Comparação das médias entre os grupos
+
+```{r}
+medias_milho3 <- emmeans(mix3,
+                        ~hybrid|method) 
+medias_milho4 <- emmeans(mix3,
+                         ~method|hybrid)
+
+cld(medias_milho3, Letters = LETTERS)
+cld(medias_milho4, Letters = letters)
+```

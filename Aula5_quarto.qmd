@@ -1,0 +1,293 @@
+---
+title: "Análise exploratória 2"
+format: html
+message: false
+warning: false
+---
+
+# Conjunto de dados 3
+
+No site [R4PDE.net](https://r4pde.net/temporal-fitting.html#entering-data) foi importado os dados denominados de `pepper`.
+
+Esse conjunto de dados fornece informações sobre a incidência de 3 epidemias diferentes na pimenta em função do tempo.
+
+```{r}
+library(dplyr)
+pepper <- 
+  tribble(
+   ~t,  ~`1`,  ~`2`,  ~`3`,
+   0,  0.08, 0.001, 0.001,
+   7,  0.13,  0.01, 0.001,
+  14,  0.78,  0.09,  0.01,
+  21,  0.92,  0.25,  0.05,
+  28,  0.99,   0.8,  0.18,
+  35, 0.995,  0.98,  0.34,
+  42, 0.999,  0.99,  0.48,
+  49, 0.999, 0.999,  0.74
+  ) 
+pepper
+```
+
+Visualizando o conjunto de dados, pode-se perceber que eles estão no formato largo. Para que seja possível realizar uma análise exploratória desses dados, é necessário usar a função `pivot_longer()`do `tidyverse` para tranformar a tabela no formato longo.
+
+```{r}
+library(tidyverse)
+
+pepper |> 
+  pivot_longer(2:4,
+               names_to = "epidemic",
+               values_to = "inc")
+```
+
+::: callout-note
+Para montagem dos gráficos, a tabela de dados deve estar no formato longo.
+:::
+
+## Trabalhando com gráfico de linha
+
+Por ser um conjunto de dados com uma resposta numérica contínua em um fator temporal, esses dados foram transformados em um gráfico de linhas usando o `geom_point()`e o `geom_line()`.
+
+Para atribuir um nome para cada linha formada, foi usada a função `annotate()`.
+
+```{r}
+pepper |> 
+  pivot_longer(2:4,
+               names_to = "epidemic",
+               values_to = "inc") |> 
+  ggplot(aes(t, inc, color = epidemic))+
+  geom_point()+
+  geom_line()+
+  annotate(geom = "text",
+           x = 10,
+           y = 0.75,
+           label = "1")+
+  annotate(geom = "text",
+           x = 25,
+           y = 0.75,
+           label = "2")+
+  annotate(geom = "text",
+           x = 47,
+           y = 0.75,
+           label = "3")+
+  theme(legend.position = "none")
+
+```
+
+# Conjunto de dados 4
+
+Usando os mesmos dados do conjunto de dados 2, foi criado uma tabela de contingência sobre o número de fazendas com incidência de ferrugem do café por região e por zona. Para isso, a função `count()` é usada para contar quantas ocorrências têm de determinadas variáveis.
+
+```{r}
+cr <- read_csv("https://raw.githubusercontent.com/emdelponte/paper-coffee-rust-Ethiopia/master/data/survey_clean.csv")
+
+cr |> 
+  count(region, zone)
+```
+
+A função `count()` fornece uma tabela de formato longo. Caso seja necessário uma tabela de contingência de formato largo, pode ser usado a função `tabyl()` do pacote `janitor`.
+
+Usando a função `tabyl()` foi criado a tabela de contingência em relação a região por zona; zona por região; e cultivar por região
+
+```{r}
+library(janitor)
+cr |> 
+  tabyl(region, zone) #Formato largo
+
+cr |> 
+  tabyl(zone, region)
+
+cr |> 
+  tabyl(cultivar, region)
+```
+
+Foi realizado também a contagem das formas de manejo das fazendas em função das cultivares.
+
+```{r}
+cr |> 
+  count(farm_management, cultivar)
+```
+
+## Trabalhando com gráfico de colunas
+
+Sobre a contagem das formas de manejo das fazendas em função das cultivares, foi criado um gráfico de colunas usando a função `geom_col()`. O gráfico de colunas é bastante usado para representar valores numéricos associados a categorias.
+
+Junto ao gráfico, foi usado a função `facet_wrap()` para dividir os gráficos em função das cultivares.
+
+```{r}
+library(ggthemes)
+
+cr |> 
+  count(farm_management, cultivar) |> 
+  ggplot(aes(cultivar, n, fill = farm_management, label = n))+
+  geom_col(position = "dodge2")+
+  scale_fill_canva()+
+  theme_bw()+
+  theme(strip.text.x = element_blank(),
+        legend.position = "top")+
+  geom_text(position = position_dodge(width = 0.9))+
+  facet_wrap(~cultivar, scales = "free_x")
+```
+
+# Conjunto de dados 5
+
+Dessa vez foi utilizado os mesmos dados do conjunto de dados 1, sobre o comprimento de plantas em função da aplicação e não aplicação de Mg2.
+
+```{r}
+library(gsheet)
+mg <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit#gid=983033137")
+mg
+```
+
+## Trabalhando com gráfico errorbar
+
+Como o conjunto de dados envolve um número grande de repetições, torna-se interessante realizar um gráfico de errorbar para demonstrar a faixa de variabilidade entre os valores.
+
+Para usar o `geom_errobar()`, é preciso primeiramente encontrar a média e o desvio padrão dos dados. Para isso pode ser utilizado a função`group_by()`para especificar o`trat`e a função`summarize()`para encontrar a média e desvio padrão. Tendo essas informações, pode-se criar um gráfico de barras com o error bar, usando o`geom_col()`e o`geom_errobar()`.
+
+```{r}
+mg |> 
+  group_by(trat) |> 
+  summarise(mean_comp = mean(comp),
+            sd_comp = sd(comp)) |> 
+  ggplot(aes(trat, mean_comp))+
+  geom_col(fill = "steelblue", width = 0.5)+
+  geom_point(size = 3)+
+  ylim(0, 20)+
+  geom_errorbar(aes(ymin = mean_comp - sd_comp,
+                    ymax = mean_comp + sd_comp),
+                width = 0.1)+
+  annotate(geom = "text",  #Pode ser usado para mostrar que é estatisticamente diferente
+           x = 1,
+           y = 17.5,
+           label = "*")
+```
+
+# Conjunto de dados 6
+
+Esse conjunto de dados contem as notas das provas (sabatinas) aplicadas em aula durante a disciplina FIP 606. Os dados foram importados do Google Sheet usando o pacote `gsheet`e a função `gsheet2tbl()`.
+
+```{r}
+notas <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit#gid=1092065531")
+```
+
+## Criando subconjuntos e tabela de contingência
+
+Para observar a quantidade e a frequência de nota de cada prova, foi separado os dados da prova 1 com os dados da prova 2, usando a função `select()` selecionando apenas as colunas `prova` e `nota`, e a função `filter()` separando a prova 1 da prova 2. Desse modo foi criado 2 subconjuntos de dados.
+
+```{r}
+notas1 <- notas |> 
+  select(prova, nota) |> 
+  filter(prova == "1")
+notas1
+
+notas2 <- notas |> 
+  select(prova, nota) |> 
+  filter(prova == "2")
+notas2
+```
+
+Após isso, foi usado a função `count()` dentro de cada subconjunto para contar a frequência de cada nota.
+
+```{r}
+notas1 |> 
+  count(nota)
+
+notas2 |> 
+  count(nota)
+```
+
+## Sumário e Histograma
+
+Para observar os dados sumarizados foi usado a função `group_by()` para agrupar os dados gerais em 2 grupos (prova 1 e prova 2), e depois foi usado a função `summarise()` para encontrar média, desvio padrão e mediana por prova, usando os argumentos `mean()`, `sd()` e `median()`, respectivamente.
+
+```{r}
+notas |> 
+  group_by(prova) |> 
+  summarise(nota_mean = mean(nota),
+            nota_sd = sd(nota),
+            nota_med = median(nota))
+```
+
+Para a análise exploratória, foi realizado um histograma para cada prova, usando a função `geom_histogram()` para os subconjuntos criados. O histograma foi utilizado para demonstrar a distribuição de frequências. Após formados, os histogramas foram juntados em uma mesma imagem usando o pacote `patchwork()`. No histograma, para delimitar o número de colunas que aparecem no gráfico, foi usado o argumento `bins = 5`, e foi criado uma linha que marca a média dos dados usando a função `geom_vline()`. Para que os dois gráficos ficassem com o eixo Y padronizado, foi colocado `ylim(0,10)`.
+
+```{r}
+media1 <- mean(notas1$nota)
+media2 <- mean(notas2$nota)
+
+library(ggthemes)
+p1 <- notas1 |> 
+  ggplot(aes(x = nota))+
+  geom_histogram(bins = 5, fill = "dark blue", color = "white")+
+  geom_vline(xintercept = media1, color ="red", linetype = "dashed") +
+  scale_fill_canva()+
+  theme_bw(base_size = 14)+
+  theme(legend.position = "bottom")+
+  annotate(geom = "text",
+           x = 72,
+           y = 7.5,
+           label = "Mean")+
+  ylim(0,10)+
+  labs(y = "Frequency",
+       x = "Notas",
+       title = "Prova 1")
+
+p2 <- notas2 |> 
+  ggplot(aes(x = nota))+
+  geom_histogram(bins = 5, fill = "orange", color = "white")+
+  geom_vline(xintercept = media2, color ="red", linetype = "dashed") +
+  scale_fill_canva()+
+  theme_bw(base_size = 14)+
+  theme(legend.position = "bottom")+
+  annotate(geom = "text",
+           x = 72,
+           y = 6.5,
+           label = "Mean")+
+  ylim(0,10)+
+  labs(y = "Frequency",
+       x = "Notas",
+       title = "Prova 2")
+
+library(patchwork)
+(p1 + p2) + 
+  plot_layout(guides = "collect",
+              axes = "collect")
+
+```
+
+Através da sumarização, pode-se observar que os valores médios das notas das duas provas são bem próximos, sendo 79.54 na prova 1 e 79.26 na prova 2. Pelo histograma também pode-se observar que na prova 1 a frequência de notas superiores a 90 foi maior do que o observado na prova 2, enquanto que na prova 2 a frequência de notas inferiores a 50 foi maior do que na prova 1.
+
+## Trabalhando com Boxplot
+
+Uma outra análise exploratória que pode ser realizado é o boxplot, usando a função `geom_boxplot()`. Para que o gráfico considere as duas provas como diferentes, foi usado o `factor()` para que cada prova seja considerada como fator. Também foram adicionados os pontos usando `geom_jitter()`, que representa as notas tiradas em cada prova.
+
+```{r}
+notas |> 
+  ggplot(aes(factor(prova), nota))+
+  geom_boxplot(fill = "light blue")+
+  geom_jitter(width = 0.05)+
+  labs(x = "Notas",
+       y = "Prova")
+```
+
+No boxplot pode-se observar que embora a prova 1 apresente a mediana um pouco maior que a prova 2, 50% das notas na prova 2 se encontram concentrados acima da nota 70, enquanto que 50% das notas na prova 1 se concentram abaixo da nota 100, mais ou menos entre 65 e 98.
+
+## Trabalhando com gráfico de errobar
+
+Por último, também foi construído um gráfico de errobar usando as funções `geom_point()` e `geom_errobar()`. No qual o ponto médio representa a média de notas em cada prova e o errobar corresponde ao intervalo de confiança. Também foi definido um limite para o eixo Y usando o `ylim(0,100)`.
+
+```{r}
+notas |> 
+  group_by(prova) |> 
+  summarise(nota_mean = mean(nota),
+            nota_sd = sd(nota))|> 
+  ggplot(aes(factor(prova), nota_mean, color = prova))+
+  theme_few()+
+  theme(legend.position = "none")+
+  geom_point(size = 3)+  
+  geom_errorbar(aes(ymin = nota_mean - nota_sd,
+                    ymax = nota_mean + nota_sd),
+                width = 0.1)+
+  ylim(0,100)
+```
+
+Como foi visto anteriormente na sumarização, os valores da média e desvio padrão foram bem semelhantes entre as duas provas, portanto não foi possível observar muita diferença através do gráfico de errobar.

@@ -1,0 +1,152 @@
+---
+title: "Importação de Dados"
+author: "Carlos"
+format: html
+message: false
+warning: false
+---
+
+# Como importar dados?
+
+Quando já temos um conjunto de dados obtido através da avaliação de um experimento, o primeiro passo que deve ser realizado para que possamos trabalhar com esses dados é sua importação.
+
+## Importando dados de pacotes
+
+Se quisermos trabalhar com dados já prontos e disponíveis dentro de um pacote do R, podemos apenas instalar o pacote desejado, ativá-lo com o `library()` e atribuir algum dado disponível dele a um nome. Como exemplo, instalamos o pacote `ec50estimator` e importamos um dado já presente nesse pacote, o `multi_isolate`.
+
+```{r}
+library(ec50estimator)
+df1 <- multi_isolate
+```
+
+## Importando dados do Excel
+
+Para dados que estão em um arquivo Excel, a sua importação pode ser feita usando a função `read_excel()` do pacote `readxl`. Nessa função, colocamos o nome do arquivo em Excel entre aspas e a sua terminação com o formato desse arquivo `.xlsx`.
+
+Essa função irá sempre abrir a primeira planilha presente no arquivo, portanto, caso for preciso abrir outra planilha, podemos usar dentro da função `read_excel()` o argumento `sheet =`, onde será especificado o nome da planilha que se deseja importar.
+
+```{r}
+library(readxl)
+df2 <- read_excel("dados-diversos.xlsx")
+df21 <- read_excel("dados-diversos.xlsx", sheet = "escala")
+```
+
+Em casos em que o arquivo estiver no formato `.csv`(valores separados por vírgulas), podemos utilizar a função `read.csv()` do pacote `tidyverse` e colocar o nome do arquivo entre aspas, assim como foi feito na função anterior.
+
+```{r}
+library(tidyverse)
+df3 <- read.csv("dados-diversos.csv")
+```
+
+## Importando dados do Google Sheets
+
+Podemos ainda importar dados do Google Sheets. Nesse caso não temos um arquivo próprio para armazenar esses dados, pois eles estão contidos dentro de um *link* na web. Para a importação desses dados, podemos usar o pacote `gsheet` e a sua função `gsheet2tbl()`. Nessa função, ao invés do nome do arquivo, é colocado o endereço da página onde estão os dados, também entre aspas. Caso seja necessário importar outra planilha, podemos usar a mesma função apenas trocando o endereço da página.
+
+O pacote `googlesheet4` também pode ser utilizado para importar dados do Google Sheets. A sua função é `read_sheet()`, no qual também é colocado entre aspas o endereço da página.
+
+```{r}
+library(gsheet)
+df4 <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit?gid=2023059672#gid=2023059672")
+df41 <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit?gid=866852711#gid=866852711")
+```
+
+## Importando dados através do pacote `datapasta`
+
+Nessa aula iremos aprender outra forma de importar os dados, através do pacote `datapasta`. Instalando o pacote, ele fornece mais opções na aba **Addins** (situada logo abaixo de "Help" no canto superior da tela). Por meio do **Addins** podemos copiar (Ctrl+C) algum dado, vetor ou tabela e colar dentro do chunk no documento R Quarto Markdown. Para colar essas informações, selecionamos o **Addins** e podemos selecionar "**Paste as**" conforme o que desejarmos, sendo *vector* uma coluna e *data.frame* como uma tabela.
+
+```{r}
+library(datapasta)
+
+comp <- c("9", "12.5", "10", "8", "13.2", "11", "10.8", "9.5", "10.8", "10.4", "13.72", "15.91", "15.7", "14.2", "15.9", "16.54", "18", "14.4", "16.41", "16")
+
+dat <- data.frame(
+  stringsAsFactors = FALSE,
+              trat = c("Mg2","Mg2","Mg2","Mg2",
+                       "Mg2","Mg2","Mg2","Mg2","Mg2","Mg2","control",
+                       "control","control","control","control","control","control",
+                       "control","control","control"),
+               rep = c(1L,2L,3L,4L,5L,6L,7L,8L,
+                       9L,10L,1L,2L,3L,4L,5L,6L,7L,8L,9L,10L),
+              comp = c(9,12.5,10,8,13.2,11,10.8,
+                       9.5,10.8,10.4,13.72,15.91,15.7,14.2,15.9,16.54,
+                       18,14.4,16.41,16))
+dat
+
+dat.tib <- tibble::tribble(
+      ~trat, ~rep, ~comp,
+      "Mg2",   1L,     9,
+      "Mg2",   2L,  12.5,
+      "Mg2",   3L,    10,
+      "Mg2",   4L,     8,
+      "Mg2",   5L,  13.2,
+      "Mg2",   6L,    11,
+      "Mg2",   7L,  10.8,
+      "Mg2",   8L,   9.5,
+      "Mg2",   9L,  10.8,
+      "Mg2",  10L,  10.4,
+  "control",   1L, 13.72,
+  "control",   2L, 15.91,
+  "control",   3L,  15.7,
+  "control",   4L,  14.2,
+  "control",   5L,  15.9,
+  "control",   6L, 16.54,
+  "control",   7L,    18,
+  "control",   8L,  14.4,
+  "control",   9L, 16.41,
+  "control",  10L,    16
+  )
+dat.tib
+
+visitas <- tibble::tribble(
+           ~Paises, ~Visitas,
+          "Brazil",     4303,
+      "Mozambique",       43,
+        "Portugal",       33,
+   "United States",       23,
+          "Angola",       19,
+           "Spain",       16,
+       "(not set)",       12,
+        "Colombia",        8,
+         "Germany",        5,
+         "Hungary",        5,
+  "United Kingdom",        5,
+     "Netherlands",        4,
+         "Ecuador",        3,
+          "France",        3,
+           "Chile",        2,
+        "Paraguay",        2,
+            "Peru",        2,
+       "Argentina",        1,
+         "Austria",        1,
+         "Bolivia",        1,
+      "Cape Verde",        1,
+           "China",        1,
+           "Egypt",        1,
+         "Finland",        1,
+           "India",        1,
+           "Italy",        1,
+        "Malaysia",        1,
+        "Pakistan",        1,
+          "Poland",        1,
+       "Singapore",        1,
+     "Timor-Leste",        1,
+         "Uruguay",        1
+  )
+```
+
+# Visualização de um data frame
+
+Após importar algum conjunto de dados, é importar visualizar os dados a fim de observar se todas as informações foram importadas corretamente. A forma mais simple de visualizar um *data frame* é simplesmente chamando o nome atribuído a ele.
+
+Existe outra forma de visualizar um *data frame* que é muito mais interativo, permitindo que o público copie automaticamente os dados da tabela ou até mesmo crie um documento Excel contendo o conjunto de dados com apenas um botão.
+
+Para criar esse *data frame* interativo, deve-se usar o pacote `DT` e a sua função `datatable()`.
+
+```{r}
+library(DT)
+datatable(df1,
+          extensions = 'Buttons',
+          options = list(
+            dom = 'Bfrtip',
+            buttons = c('copy', 'excel')))
+```

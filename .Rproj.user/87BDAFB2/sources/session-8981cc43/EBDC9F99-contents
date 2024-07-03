@@ -1,0 +1,34 @@
+---
+title: "Pacotes"
+format: html
+warning: false
+message: false
+---
+
+# O que são pacotes?
+
+Os **packages** ou **pacotes** são conjunto de funções, dados e documentações que podem ser instalados a fim de estender a funcionalidade do R.
+
+Para instalar novos pacotes, usamos a função `install.packages()`e chamamos o nome do pacote desejado. Outra forma de instalar pacotes é clicar na aba *Packages* do painel localizado à direita inferior e clicar no *Install*. Na janela aberta, é preciso apenas escrever o nome do pacote e instalar.
+
+```{r}
+#install.packages("agricolae")
+```
+
+# Library
+
+Para que o pacote instalado seja ativado e possa ser utilizado no nosso arquivo, é necessário chamá-lo pela função `library()`. Essa função irá ativar o pacote, permitindo que todas as funções e dados contidos no pacote estejam disponíveis para o uso.
+
+No exemplo abaixo iremos chamar o pacote `agricolae`, que foi previamente instalado. Com o pacote ativado, podemos usar uma de suas funções: o `audpc()` (usado para calcular a área abaixo da curva de progresso da doença).
+
+```{r}
+library(agricolae)
+
+dates<-c(14,21,28)
+evaluation<-c(40,80,90)
+audpc(evaluation,dates)
+```
+
+# Usando o help
+
+Para tirar dúvida de como um pacote funciona e quais são as funções e dados presentes dentro dele, pode-se utilizar `?` com o nome do pacote para aparecer todas as informações pertinentes sobre ele. Para aprender sobre uma determinada função, pode-se utilizar também `??`.
