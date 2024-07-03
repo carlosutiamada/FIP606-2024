@@ -109,7 +109,7 @@
     "href": "Aula1_quarto.html#chunk",
     "title": "Introdução ao R",
     "section": "Chunk",
-    "text": "Chunk\nO principal mecanismo para executar qualquer código no R envolve primeiro a criação de um chunk. O chunk permite que as funções e demais códigos sejam executadas e rodadas no documento. Um atalho que pode ser usado para sua criação é o Ctrl + Alt + I.\n\n\n\n\n\n\nNote\n\n\n\nQualquer código que tenha como função a importação, manipulação, análise e visualização de dados precisa ser realizado dentro de um chunk para que ele possa ser lido e executado pelo R!"
+    "text": "Chunk\nO principal mecanismo para executar qualquer código no R envolve primeiro a criação de um chunk. O chunk permite que as funções e demais códigos sejam executadas e rodadas no documento. Um atalho que pode ser usado para sua criação é o Ctrl + Alt + I.\n\n\n\n\n\n\nImportant\n\n\n\nQualquer código que tenha como função a importação, manipulação, análise e visualização de dados precisa ser realizado dentro de um chunk para que ele possa ser lido e executado pelo R!"
   },
   {
     "objectID": "Aula1_quarto.html#texto",

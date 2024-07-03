@@ -23,11 +23,9 @@ Todos os testes estatísticos têm premissas de base que precisam ser atendidas 
 
 **Normalidade**: A distribuição do conjunto de dados segue uma distribuição normal. Caso essa premissa não seja atendida, os dados devem ser trabalhados com testes não-paramétricos. A normalidade em testes estatísticos entre dois grupos pode ser calculada através do Shapiro-test.
 
-![Normalidade](C:/Users/carlo/Documents/GitHub/FIP606-2024/Normal.png)
-
 **Homocedasticidade**: as variâncias entre os dois grupos estudados são homogêneas, ou seja, similares. Essa premissa pode ser calculada por teste de variância.
 
-::: callout-note
+::: callout-important
 A premissa da homocedasticidade tem maior peso que a premissa da normalidade. Portanto, não se deve trabalhar com dados com variâncias heterogêneas.
 :::
 
@@ -41,8 +39,6 @@ As hipóteses formuladas em um teste-t comparam as médias entre dois grupos, po
 -   **Hipótese alternativa (Ha)**: a média do grupo 1 é diferente da média do grupo 2
 
 Tendo formulado as hipóteses, o teste-t irá calcular o valor de *t* e vai aplicá-lo à função densidade de probabilidade da distribuição *t* de Student medindo o tamanho da área abaixo dessa função para valores maiores ou iguais a *t*. Essa área representa a probabilidade da média dessa(s) amostra(s) em questão ter(em) apresentado o(s) valor(es) observado(s) ou algo mais extremo. Se a probabilidade desse resultado ter ocorrido for muito pequena, podemos concluir que o resultado observado é estatisticamente relevante. Essa probabilidade também é chamada de p-valor ou valor *p*.
-
-![Teste-t](C:/Users/carlo/Documents/GitHub/FIP606-2024/TesteT.png)
 
 Caso o nível de significância do p-valor for de 5% e a área abaixo da função densidade de probabilidade da distribuição *t* de Student seja menor do que 5%, pode-se afirmar que a hipótese nula é rejeitada com nível de confiança de 95%.
 
@@ -212,9 +208,7 @@ Como o p-valor foi inferior ao nível de significância, rejeitamos a hipótese 
 
 Os testes não-paramétricos são utilizados quando o conjunto de dados experimentados não segue uma distribuição normal. Dessa forma é necessário aplicar outros testes estatísticos para analisar dois grupos.
 
-![Testes não-paramétricos](C:/Users/carlo/Documents/GitHub/FIP606-2024/Testes.jpg)
-
-Como observado na imagem acima, os testes de Mann-Whitney e de Wilcoxon podem ser usados substituindo o teste-t para análises não-paramétricos de apenas 2 grupos, sendo que o teste de Mann-Whitney é usado para 2 grupos independentes e o teste de Wilcoxon para dois grupos dependentes.
+Os testes de Mann-Whitney e de Wilcoxon podem ser usados substituindo o teste-t para análises não-paramétricos de apenas 2 grupos, sendo que o teste de Mann-Whitney é usado para 2 grupos independentes e o teste de Wilcoxon para dois grupos dependentes.
 
 ## Teste de premissas
 

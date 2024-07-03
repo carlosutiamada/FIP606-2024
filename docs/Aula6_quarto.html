@@ -287,20 +287,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Premissas</h1>
 <p>Todos os testes estatísticos têm premissas de base que precisam ser atendidas para que o teste forneça resultados válidos em relação ao parâmetro que está sendo calculado. Os testes estatísticos devem atender às premissas de normalidade e homocedasticidade.</p>
 <p><strong>Normalidade</strong>: A distribuição do conjunto de dados segue uma distribuição normal. Caso essa premissa não seja atendida, os dados devem ser trabalhados com testes não-paramétricos. A normalidade em testes estatísticos entre dois grupos pode ser calculada através do Shapiro-test.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="C:/Users/carlo/Documents/GitHub/FIP606-2024/Normal.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Normalidade</figcaption>
-</figure>
-</div>
 <p><strong>Homocedasticidade</strong>: as variâncias entre os dois grupos estudados são homogêneas, ou seja, similares. Essa premissa pode ser calculada por teste de variância.</p>
-<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Note
+Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -317,12 +311,6 @@ Note
 <li><strong>Hipótese alternativa (Ha)</strong>: a média do grupo 1 é diferente da média do grupo 2</li>
 </ul>
 <p>Tendo formulado as hipóteses, o teste-t irá calcular o valor de <em>t</em> e vai aplicá-lo à função densidade de probabilidade da distribuição <em>t</em> de Student medindo o tamanho da área abaixo dessa função para valores maiores ou iguais a <em>t</em>. Essa área representa a probabilidade da média dessa(s) amostra(s) em questão ter(em) apresentado o(s) valor(es) observado(s) ou algo mais extremo. Se a probabilidade desse resultado ter ocorrido for muito pequena, podemos concluir que o resultado observado é estatisticamente relevante. Essa probabilidade também é chamada de p-valor ou valor <em>p</em>.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="C:/Users/carlo/Documents/GitHub/FIP606-2024/TesteT.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Teste-t</figcaption>
-</figure>
-</div>
 <p>Caso o nível de significância do p-valor for de 5% e a área abaixo da função densidade de probabilidade da distribuição <em>t</em> de Student seja menor do que 5%, pode-se afirmar que a hipótese nula é rejeitada com nível de confiança de 95%.</p>
 <p>Note que não rejeitar a hipótese nula não é a mesma coisa que afirmar que a hipótese alternativa é válida com o mesmo nível de confiança. Isso seria uma interpretação incorreta do teste.</p>
 </section>
@@ -587,13 +575,7 @@ mean difference
 <section id="teste-não-paramétrico" class="level1">
 <h1>Teste não paramétrico</h1>
 <p>Os testes não-paramétricos são utilizados quando o conjunto de dados experimentados não segue uma distribuição normal. Dessa forma é necessário aplicar outros testes estatísticos para analisar dois grupos.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="C:/Users/carlo/Documents/GitHub/FIP606-2024/Testes.jpg" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Testes não-paramétricos</figcaption>
-</figure>
-</div>
-<p>Como observado na imagem acima, os testes de Mann-Whitney e de Wilcoxon podem ser usados substituindo o teste-t para análises não-paramétricos de apenas 2 grupos, sendo que o teste de Mann-Whitney é usado para 2 grupos independentes e o teste de Wilcoxon para dois grupos dependentes.</p>
+<p>Os testes de Mann-Whitney e de Wilcoxon podem ser usados substituindo o teste-t para análises não-paramétricos de apenas 2 grupos, sendo que o teste de Mann-Whitney é usado para 2 grupos independentes e o teste de Wilcoxon para dois grupos dependentes.</p>
 <section id="teste-de-premissas-2" class="level2">
 <h2 class="anchored" data-anchor-id="teste-de-premissas-2">Teste de premissas</h2>
 <p>Usando o mesmo conjunto de dados da análise anterior, observa-se que nem a premissa de normalidade e nem a premissa de homocedasticidade foram atendidas.</p>
